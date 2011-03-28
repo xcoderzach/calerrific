@@ -1,5 +1,5 @@
 <?php
-/* User Fixture generated on: 2011-03-11 13:20:56 : 1299871256 */
+/* User Fixture generated on: 2011-03-28 13:59:19 : 1301338759 */
 class UserFixture extends CakeTestFixture {
 	var $name = 'User';
 
