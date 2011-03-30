@@ -5,9 +5,8 @@ class EventsController extends AppController {
   var $name = 'Events';
 	
   function index() {
-	$this->set("events", $this->Event->find("all"));
 	$this->view = "Json";
-	$this->set("json", "events");
+	$this->set("json", $this->Event->find("all"));
   }
 
 }
