@@ -1,15 +1,10 @@
-<div class="users form">
-<?php echo $this->Form->create('User');?>
+<div class="tags form">
+<?php echo $this->Form->create('Tag');?>
 	<fieldset>
- 		<legend><?php __('Add User'); ?></legend>
+ 		<legend><?php __('Add Tag'); ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('pw');
-		echo $this->Form->input('username');
-		echo $this->Form->input('position');
-		echo $this->Form->input('email');
-		echo $this->Form->input('title');
-		echo $this->Form->input('department');
+		echo $this->Form->input('slug');
 		echo $this->Form->input('Event');
 	?>
 	</fieldset>
@@ -19,7 +14,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('List Users', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('List Tags', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Events', true), array('controller' => 'events', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Event', true), array('controller' => 'events', 'action' => 'add')); ?> </li>
 	</ul>
