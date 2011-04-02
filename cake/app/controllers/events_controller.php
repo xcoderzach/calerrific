@@ -9,7 +9,16 @@ class EventsController extends AppController {
 
 	$url = $this->params['url'];
 	$raw_events = $this->_find_events_raw($url);
-	$this->set('json', $this->_format_events($raw_events));
+	$rows = $this->_extract_rows($raw_events);
+	$this->set('json', $this->_format_events($rows));
+  }
+
+  function _extract_rows($raw_events) {
+	$res = array();
+	foreach ($raw_events as $row) {
+	  $res[] = $row['Event'];
+	}
+	return $res;
   }
 
   function _find_events_raw($url) {
@@ -32,18 +41,18 @@ class EventsController extends AppController {
 	  $conditions['location'] = $url['location'];
 	}
 	
-	return $this->Event->find($type, array('conditions' => $conditions));
+	return $this->Event->find($type, array('conditions' => $conditions,
+										   'recursive' => 0));
   }
 
-  function _format_events($raw_events) {
+  function _format_events($rows) {
 	$id_map = array();
 	$day_map = array();
 
 	// First, populate id_map with id->raw_event mappings
 	// Then populate day_map with date->set of ids, where the elements in the
 	// set are the keys of the array with true values.
-	foreach ($raw_events as $raw) {
-	  $actual_data = $raw['Event'];
+	foreach ($rows as $actual_data) {
 	  $id_map[$actual_data['id']] = $actual_data;
 	  
 	  $time = $this->_datetime_to_date($actual_data['start_time']);
@@ -75,6 +84,14 @@ class EventsController extends AppController {
 
   function _datetime_to_date($datetime) {
 	return substr($datetime, 0, 10);
+  }
+
+  function tag($id) {
+	$this->view = 'Json';
+	$this->loadModel('Tag');
+	
+	$raw_rows = $this->Tag->findById($id);
+	$this->set('json', $this->_format_events($raw_rows['Event']));
   }
 
 }
