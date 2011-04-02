@@ -2,6 +2,6 @@
 class Event extends AppModel {
 	var $name = 'Event';
 	var $useDbConfig = 'groupWdb';
-	var $hasAndBelongsToMany = 'Tag';
+	var $hasAndBelongsToMany = array('Tag', 'User');
 }
 ?>

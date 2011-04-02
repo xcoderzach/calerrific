@@ -26,5 +26,18 @@ class UsersController extends AppController {
 	  return $res;
 	}
 
+	function event($id) {
+	  $this->view = 'Json';
+	  $this->loadModel('Event');
+	  
+	  $raw = $this->Event->findById($id);
+	  $users = $raw['User'];
+	  $res = array();
+	  foreach ($users as $user) {
+		$res[] = array('id' => $user['id'], 'name' => $user['name'], 'status' => $user['EventsUser']['status']);
+	  }
+	  $this->set('json', $res);
+	}
+
 }
 ?>

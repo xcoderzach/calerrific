@@ -94,5 +94,18 @@ class EventsController extends AppController {
 	$this->set('json', $this->_format_events($raw_rows['Event']));
   }
 
+  function user($id) {
+	$this->view = 'Json';
+	$this->loadModel('User');
+	
+	$raw_rows = $this->User->findById($id);
+	$events = $raw_rows['Event'];
+	for ($i = 0; $i < count($events); $i++) {
+	  $events[$i]['status'] = $events[$i]['EventsUser']['status'];
+	  unset($events[$i]['EventsUser']);
+	}
+	$this->set('json', $this->_format_events($events));
+  }
+
 }
 ?>
