@@ -14,6 +14,7 @@ class EventsController extends AppController {
 
   function _find_events_raw($url) {
 	$conditions = array();
+	$type = 'all';
 	if (isset($url['start'])) {
 	  $conditions['start_time >='] = $url['start'].' 00:00:00';
 	}
@@ -22,6 +23,7 @@ class EventsController extends AppController {
 	}
 	if (isset($url['id'])) {
 	  $conditions['id'] = $url['id'];
+	  $type = 'first';
 	}
 	if (isset($url['user'])) {
 	  $conditions['user_id'] = $url['user'];
@@ -30,7 +32,7 @@ class EventsController extends AppController {
 	  $conditions['location'] = $url['location'];
 	}
 	
-	return $this->Event->find('all', array('conditions' => $conditions));
+	return $this->Event->find($type, array('conditions' => $conditions));
   }
 
   function _format_events($raw_events) {
