@@ -7,25 +7,30 @@ class EventsController extends AppController {
   function index() {
 	$this->view = "Json";
 
-	$start = $this->params['url']['start'];
-	$end = $this->params['url']['end'];
-	
-	$this->set('json', $this->_format_events($this->_find_events_raw($start, $end)));
+	$url = $this->params['url'];
+	$raw_events = $this->_find_events_raw($url);
+	$this->set('json', $this->_format_events($raw_events));
   }
 
-  function _find_events_raw($start, $end) {
-	if (!isset($start) || !isset($end)) {
-	  return array();
-	} else {
-	  $start = $start." 00:00:00";
-	  $end = $end." 00:00:00";
+  function _find_events_raw($url) {
+	$conditions = array();
+	if (isset($url['start'])) {
+	  $conditions['start_time >='] = $url['start'].' 00:00:00';
 	}
-
-	// Make query
-	$conds = array('start_time >=' => $start, 'end_time <=' => $end);
-	$data = $this->Event->find('all', array('conditions' => $conds));
-
-	return $data;
+	if (isset($url['end'])) {
+	  $conditions['end_time <='] = $url['end'].' 00:00:00';
+	}
+	if (isset($url['id'])) {
+	  $conditions['id'] = $url['id'];
+	}
+	if (isset($url['user'])) {
+	  $conditions['user_id'] = $url['user'];
+	}
+	if (isset($url['location'])) {
+	  $conditions['location'] = $url['location'];
+	}
+	
+	return $this->Event->find('all', array('conditions' => $conditions));
   }
 
   function _format_events($raw_events) {
