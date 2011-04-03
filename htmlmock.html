@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  
+    <title>Htmlmock</title>
+
+    <script type="text/javascript" charset="utf-8" src= "http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src= "http://documentcloud.github.com/underscore/underscore-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src= "https://github.com/xcoderzach/LiveView/raw/master/src/live_view.js"></script>
+
+    <link rel="stylesheet" href="http://github.com/joshuaclayton/blueprint-css/raw/master/blueprint/screen.css" type="text/css" media="screen" charset="utf-8">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
+    <style type="text/css" media="screen">
+      ul, ol {
+        margin:0;
+        padding:0;
+        list-style:none;
+      }
+
+      body {
+        font-size:.75em;
+        font-family:'Droid Sans', sans-serif;
+        font-weight:bold;
+        height:100%;
+        margin-top:18px;
+      }
+
+      #calendar {
+        text-align:center;
+        height:100%;
+        min-width:960px;
+        min-height:500px;
+      }
+
+      #week-header {
+        height:18px;
+        top:0px;
+        position:absolute;
+        width:100%;
+        min-width:960px;
+        background-color:white;
+      }
+
+      .day {
+        position: relative;
+        height: 19.8%;
+        overflow:hidden;
+      }
+
+      .placeholder {
+        height:50px;
+      }
+
+      .events {
+        list-style:disc;
+        margin:20px;
+      }
+
+      .span-week {
+        width:14%;
+        float:left;
+      }
+
+      .span-week.last {
+        border-right:1px solid black; 
+      }
+      
+    </style>
+    <script>
+       
+      Date.prototype.getWeek = function() {
+        return Math.floor((this.getDate() + 1) / 7)
+      }
+       
+      var data = []
+
+      for(var i = 0 ; i < 31 ; i++) {
+        var date = new Date(2011, 2, i + 1)
+        data[i] = { date: date.getDate()
+                  , dayOfWeek: date.getDay()
+                  , month: date.getMonth()
+                  , week: date.getWeek() 
+                  , events: [{title: "cool event"}, {title: "cool event"}, {title: "cool event"}]
+                  }
+      }
+
+      var placeholders = data[0].dayOfWeek;
+      for(var i = 0 ; i < placeholders ; i++) {
+        data.unshift({day:"&nbsp;"})
+      }
+      $(function() {
+        var calendar = new LiveView($("#calendar-month"), {"days": data})
+      })
+    </script>
+  </head>
+  <body>
+    <div id = "calendar-month">
+      <ul id = "week-header">
+        <li class = "span-week">Sunday</li>
+        <li class = "span-week">Monday</li>
+        <li class = "span-week">Tuesday</li>
+        <li class = "span-week">Wednesday</li>
+        <li class = "span-week">Thursday</li>
+        <li class = "span-week">Friday</li>
+        <li class = "span-week last">Saturday</li>
+      </ul>
+      <ul class = "days">
+        <div class = "day span-week">
+          <ul class = "events">
+            <li class = "event">Stuff needs to get done</li>
+            <li class = "event">Some other stuff too</li>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </body>
+</html>
