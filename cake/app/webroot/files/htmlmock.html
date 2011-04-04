@@ -66,31 +66,82 @@
       }
       
     </style>
-    <script>
-       
-      Date.prototype.getWeek = function() {
-        return Math.floor((this.getDate() + 1) / 7)
-      }
-       
-      var data = []
+    <script>       
 
-      for(var i = 0 ; i < 31 ; i++) {
-        var date = new Date(2011, 2, i + 1)
-        data[i] = { date: date.getDate()
-                  , dayOfWeek: date.getDay()
-                  , month: date.getMonth()
-                  , week: date.getWeek() 
-                  , events: [{title: "cool event"}, {title: "cool event"}, {title: "cool event"}]
-                  }
-      }
+Date.prototype.getUTCWeek = function() {
+    return Math.floor((this.getUTCDay() + this.getUTCDate() - 1) / 7)
+}
 
-      var placeholders = data[0].dayOfWeek;
-      for(var i = 0 ; i < placeholders ; i++) {
-        data.unshift({day:"&nbsp;"})
-      }
-      $(function() {
-        var calendar = new LiveView($("#calendar-month"), {"days": data})
-      })
+Number.prototype.zeroPad = function(length) {
+  var newString = this.toString()
+  while(newString.length < length) {
+    newString = ("0" + newString)
+  }
+  return newString
+}
+
+Date.prototype.getDaysPerCurrentMonth = function() {
+  var nextMonth
+  if(this.getMonth() != 11) {
+    nextMonth = new Date((new Date(this.getFullYear(), this.getMonth() + 1, 1)) - 1).getDate()
+  } else {
+    nextMonth = new Date((new Date(this.getFullYear() + 1, 0, 1)) - 1).getDate()
+  }
+  return nextMonth
+  
+}
+
+Date.prototype.getYYYYMMDD = function() {
+    var year = this.getUTCFullYear()
+    var month = (this.getUTCMonth()+1).zeroPad()
+    var date = this.getUTCDate().zeroPad()
+    return year + "-" + month + "-" + date;
+}
+
+Date.prototype.normalize = function() {
+		return new Date(this.getUTCFullYear(),
+										this.getUTCMonth(),
+										this.getUTCDate())
+}
+
+// 1-based month
+function generateMonthData(year, month) {
+	var starting = year.zeroPad(4) + '-' + month.zeroPad(2) + '-01';
+	var ending = (month === 12 ? year + 1 : year).zeroPad(4) + '-' + (month === 12 ? 1 : month + 1).zeroPad(2) + '-01';
+	var data = [];
+	function processResult(res) {
+		var dates = JSON.parse(res);
+		var i;
+		var date;
+		var tmp;
+		var formatedDate;
+		
+		var firstOfMonth = new Date(starting).normalize();
+		for(i = 0 ; i < firstOfMonth.getDay(); i++) {
+			data.push({day: "&nbsp;"})
+		}
+		for (i = 0; i < firstOfMonth.getDaysPerCurrentMonth(); i++) {
+			data.push({date: i + 1});
+		}
+		for (date in dates) {
+			tmp = new Date(date);
+			formatedDate = {date: tmp.getUTCDate(),
+							events: dates[date]};
+			data[tmp.getUTCDay() + 7*tmp.getUTCWeek()] = formatedDate;
+		}      		
+	}
+
+	$.ajax({url: 'http://localhost:3000/events?start=' + starting + '&end=' + ending,
+			async: false,
+			success: processResult});
+	return data;
+}
+
+$(function() {
+	var data = generateMonthData(2011, 3);
+	calender = new LiveView($("#calendar-month"), {"days": data});
+})
+
     </script>
   </head>
   <body>
@@ -106,9 +157,9 @@
       </ul>
       <ul class = "days">
         <div class = "day span-week">
+		  <div class = "date"></div>
           <ul class = "events">
-            <li class = "event">Stuff needs to get done</li>
-            <li class = "event">Some other stuff too</li>
+			<div class = "name"></div>
           </ul>
         </div>
       </ul>
