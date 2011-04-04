@@ -9,7 +9,7 @@ body {
   font-family:'Droid Sans', sans-serif;
   font-weight:bold;
   height:100%;
-  margin-top:18px;
+  margin-top:40px;
 }
 
 #calendar {
@@ -21,11 +21,27 @@ body {
 
 #week-header {
   height:18px;
-  top:0px;
+  top:22px;
   position:absolute;
   width:100%;
   min-width:960px;
   background-color:white;
+}
+
+#nav {
+	position:absolute;
+	text-align:center;
+	height:18px;
+	top:0px;
+	width:100%;
+}
+
+#previous-month {
+	margin-right:50px;
+}
+
+#next-month {
+	margin-left:50px;
 }
 
 .day {

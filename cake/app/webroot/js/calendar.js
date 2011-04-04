@@ -2,10 +2,14 @@ var calendar
   , now = new Date()
   , currentMonth = now.getUTCMonth() + 1
   , currentYear =  now.getUTCFullYear()
+  , months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+var getMonthName = function(month) {
+  return months[month]
+}
 
 Date.prototype.getUTCWeek = function() {
-    return Math.floor((this.getUTCDay() + this.getUTCDate() - 1) / 7)
+  return Math.floor((this.getUTCDay() + this.getUTCDate() - 1) / 7)
 }
 
 Number.prototype.zeroPad = function(length) {
@@ -31,7 +35,7 @@ Date.prototype.getYYYYMMDD = function() {
     var year = this.getUTCFullYear()
     var month = (this.getUTCMonth()+1).zeroPad()
     var date = this.getUTCDate().zeroPad()
-    return year + "-" + month + "-" + date;
+    return year + "-" + month + "-" + date
 }
 
 Date.prototype.normalize = function() {
@@ -86,10 +90,14 @@ function generateRangeData(range, padding, callback) {
 
 	$.ajax({ url: 'http://localhost:3000/events?start=' + range[0] + '&end=' + range[1]
          , success: function(res) {
-           processResult(res)
-           callback(padding.concat(data))
+						 processResult(res)
+						 callback(padding.concat(data))
+						 currentYear = new Date(range[0]).getUTCFullYear();
+						 currentMonth = new Date(range[0]).getUTCMonth()+1;
+						 $(".current-month").html(getMonthName(currentMonth-1))
+						 $(".current-year").html(currentYear)
          }
-        })
+         })
 }
 
 // 1-based month
@@ -147,7 +155,8 @@ $(function() {
 		var i
 
 		calendar = new LiveView($("#calendar-month"), {"days": data})
-
+    $(".current-month").html(getMonthName(currentMonth))
+    $(".current-year").html(currentYear)
 		$("#next-month").click(function() {
 			nextMonth()
 			switchToMonth(currentYear, currentMonth)
