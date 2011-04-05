@@ -39,5 +39,39 @@ class UsersController extends AppController {
 	  $this->set('json', $res);
 	}
 
-}
+	function update() {
+	  $this->view = 'Json';
+
+	  $fields = array('name', 'username', 'position', 'email',
+					  'title', 'deparment');
+	  $post = $this->params['form'];
+	  // Validate more
+	  if ($this->Session->check('User.id') &&
+		  $this->_validate_fields($post, $fields)) {
+		$id = $post['id'];
+		$coreData = $this->_extract_fields($post, $fields);
+		$old = $this->User->findById($id);
+		$coreData['id'] = $id;
+		$old['User'] = $coreData;
+		if ($id == $this->Session->read('User.id')) {
+		  $this->User->set($old);
+		  $res = $this->User->save();
+		  $this->set('json', ($res ? true : false));
+		} else {
+		  $this->set('json', false);
+		}
+	  } else {
+		$this->set('json', false);
+	  }
+	}
+
+	function _validate_fields($obj, $fields) {
+	  foreach($fields as $field) {
+		if (!isset($obj[$field]) || $obj[$field] === '') {
+		  return false;
+		}
+	  }
+	  return true;
+	}
+  }
 ?>
