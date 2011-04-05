@@ -1,11 +1,13 @@
 var monthView
   , weekView
+  , eventView
   , now = new Date()
   , currentView
   , currentMonth = now.getUTCMonth() + 1
   , currentYear =  now.getUTCFullYear()
   , currentWeek = now.getUTCWeekOfYear()
   , months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  , eventRegistry = {}
 
 var getMonthName = function(month) {
   return months[month]
@@ -49,16 +51,17 @@ function generateRangeData(range, padding, callback) {
         var secondsSinceMidnight = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
         var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
         evt["week-event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
+        evt["event"] = {"data-event": evt.id}
         console.log((new Date(parseInt(evt.start_timestamp))).getHours())
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
+        eventRegistry[evt.id] = evt
       })
 			formatedDate = {date: tmp.getUTCDate(), events: dates[date]}
-      console.log(formatedDate)
 			data[tmp.getUTCDate() - starting - 1] = formatedDate
 		}     		
 	}
 
-	$.ajax({ url: 'http://localhost:3000/events?start=' + range[0] + '&end=' + range[1]})
+	$.ajax({ url: '/events?start=' + range[0] + '&end=' + range[1]})
   .success(function(res) {
      processResult(res)
      callback(padding.concat(data))
@@ -112,6 +115,14 @@ function switchToWeek(year, week) {
   })
 }  
 
+function switchToEvent() {
+  generateEventData(evt, function(data) {
+    weekView.days.removeAll()
+    weekView.days.create(data)
+  })
+}  
+ 
+
 function nextMonth() {
   if(currentMonth === 12) {
     currentMonth = 1
@@ -163,30 +174,49 @@ function initMonthView() {
 		monthView = new LiveView($("#calendar-month"), {"days": data})
   }) 
 }
+ 
+function initEventView() {
+  eventView = new LiveView($("#calendar-event"), {"events": []})
+}
+ 
 
 function showView(view) {
   if(view === "month" && currentView !== "month") {
-    $("#calendar-week").hide()
     $("#calendar-month").show()
     $("#month-controls").show()
+
+    $("#calendar-event").hide()
+
+    $("#calendar-week").hide()
     $("#week-controls").hide()
     switchToMonth(currentYear, currentMonth)
   } else if(view === "week" && currentView !== "week") {
     $("#calendar-month").hide()
-    $("#calendar-week").show()
     $("#month-controls").hide()
+
+    $("#calendar-event").hide()
+
+    $("#calendar-week").show()
     $("#week-controls").show()
     switchToWeek(currentYear, currentWeek)
-  }
+  } else if(view === "event" && currentView !== "event") {
+    $("#calendar-event").show()
+    $("#calendar-month").hide()
+    $("#calendar-week").hide()
+    $("#month-controls").hide()
+    $("#week-controls").hide()
+  } 
   currentView = view
 }
 
 $(function() {
   initMonthView()
   setTimeout(initWeekView, 1000)
+  initEventView()
   showView("month")
   $("#month-view").click(function() { showView("month") })
   $("#week-view").click(function() { showView("week") })
+  $("#event-view").click(function() { showView("event") })
  
 	$("#next-week").click(nextWeek)
 	$("#previous-week").click(previousWeek) 
@@ -194,3 +224,17 @@ $(function() {
 	$("#next-month").click(nextMonth)
 	$("#previous-month").click(previousMonth)
 })
+
+$("#calendar-month .event, #calendar-week .event").live("click", function() {
+  var id = $(this).attr("data-event")
+  eventView.events.removeAll()
+  eventView.events.create(eventRegistry[id])
+  showView("event")
+})
+
+$("#search-box").live("click", function() {
+  var id = $(this).attr("data-event")
+  eventView.events.removeAll()
+  eventView.events.create(eventRegistry[id])
+  showView("event")
+}) 

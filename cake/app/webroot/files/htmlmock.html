@@ -19,6 +19,7 @@
       <div id = "view-switcher">
         <div id = "month-view" class = "ui-state-default ui-corner-left">month</div>
         <div id = "week-view" class = "ui-state-default ui-corner-right">week</div>
+        <div id = "event-view" class = "ui-state-default ui-corner-right">event</div>
       </div>
       <div id = "month-controls" style = "display:none;">
         <span id = "previous-month" class = "ui-state-default">Previous month</span>
@@ -36,7 +37,7 @@
         </span> 
         <span id = "next-week" class = "ui-state-default ui-corner-all">Next week</span>
       </div>
-      <input type = "search" id = "search-box" style = "float: right;" />
+      <input type = "text" id = "search-box" style = "float: right;" />
     </div>
     <div id = "calendar-month" style = "display:none;">
       <ul id = "week-header">
@@ -53,7 +54,7 @@
           <div class = "date"></div>
           <div class = "events">
             <div class = "event">
-              <div class = "name"></div>
+              <div><span class = "name"></span> - <span class = "start-time"></span></div>
           </div>
         </li>
       </ul>
@@ -72,13 +73,28 @@
         <li class = "day span-week ui-widget-content">
           <div class = "date"></div>
           <div class = "events">
-            <div class = "week-event">
+            <div class = "event week-event">
               <div> 
                 <span class = "name"></span> - <span class = "start-time"></span>
               </div>
               <div class = "tags"></div>
           </div>
         </li>
+      </ul>
+    </div>
+    <div id = "calendar-event" style = "display:none;">
+      <div class = "events">
+        <div class = "event">
+          <div> 
+            <span class = "name"></span> - <span class = "start-time"></span>
+          </div>
+          Location:
+          <div class = "location"></div>
+          Tags:
+          <div class = "tags">
+            <div class = "tag"></div>
+          </div>
+        </div> 
       </ul>
     </div>
   </body>

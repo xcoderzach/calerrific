@@ -80,6 +80,6 @@ body {
   border-right:1px solid black; 
 }
 
-#view-switcher, #week-view, #month-view {
+#view-switcher, #week-view, #month-view, #event-view {
   float:left;
 }
