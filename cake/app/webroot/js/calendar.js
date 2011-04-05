@@ -38,14 +38,19 @@ function generateRangeData(range, padding, callback) {
     var nextDate = new Date(range[0]) 
 		var starting = nextDate.getUTCDate()-1
 
-		for (i = starting; i < starting + getDaysInRange(range); i++) {
+		for (i = starting ; i < starting + getDaysInRange(range) ; i++) {
 			data.push({date: nextDate.getUTCDate()})
       nextDate = nextDate.tomorrow()
 		}
 		for (date in dates) {
 			tmp = new Date(date)
+      dates[date].forEach(function(evt) {
+        var seconds = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
+        evt["event"] = {style: "top: " + seconds / 860 + "%;"}
+      })
 			formatedDate = {date: tmp.getUTCDate(), events: dates[date]}
-			data[tmp.getUTCDate()-starting-1] = formatedDate
+      console.log(formatedDate)
+			data[tmp.getUTCDate() - starting - 1] = formatedDate
 		}     		
 	}
 

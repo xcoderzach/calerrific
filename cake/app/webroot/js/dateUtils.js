@@ -6,6 +6,10 @@ Date.prototype.tomorrow = function() {
   return new Date(this.getTime() + 24 * 60 * 60 * 1000)
 }
 
+Date.prototype.secondsSinceMidnight = function() {
+  return Math.floor((this.getTime() - (new Date(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate())).getTime()) / 1000)
+}
+
 Number.prototype.zeroPad = function(length) {
   var newString = this.toString()
   while(newString.length < length) {
@@ -25,6 +29,7 @@ Date.prototype.getDaysPerCurrentMonth = function() {
 }
 
 Date.prototype.getUTCWeekOfYear = function() {
+
   var onejan = new Date(this.getUTCFullYear(),0,1);
   return Math.floor((((this - onejan) / 86400000) + onejan.getUTCDay() + 1)/7) - 1;
 } 

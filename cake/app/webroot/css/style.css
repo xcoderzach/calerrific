@@ -50,6 +50,10 @@ body {
   overflow:hidden;
 }
 
+#calendar-week .day {
+  height:100%;
+}
+
 .placeholder {
   height:50px;
 }
@@ -57,6 +61,10 @@ body {
 .events {
   list-style:disc;
   margin:20px;
+}
+
+#calendar-week .event {
+  position:absolute;
 }
 
 .span-week {
@@ -73,4 +81,3 @@ body {
 .span-week.last {
   border-right:1px solid black; 
 }
-
