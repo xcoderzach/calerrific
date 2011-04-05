@@ -79,3 +79,7 @@ body {
 .span-week.last {
   border-right:1px solid black; 
 }
+
+#view-switcher, #week-view, #month-view {
+  float:left;
+}

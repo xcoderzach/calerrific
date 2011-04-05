@@ -47,8 +47,9 @@ function generateRangeData(range, padding, callback) {
       dates[date].forEach(function(evt) {
         var secondsSinceMidnight = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
         var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
-        console.log(duration)
-        evt["event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
+        evt.event = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
+        console.log((new Date(parseInt(evt.start_timestamp))).getHours())
+        evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
       })
 			formatedDate = {date: tmp.getUTCDate(), events: dates[date]}
       console.log(formatedDate)
@@ -64,6 +65,8 @@ function generateRangeData(range, padding, callback) {
      currentMonth = new Date(range[0]).getUTCMonth()+1;
      $(".current-month").html(getMonthName(currentMonth-1))
      $(".current-year").html(currentYear)
+     $(".start-of-week").html(new Date(new Date(range[0]).getTime() + 24 * 60 * 60 * 1000).toDateString())
+     $(".end-of-week").html(new Date(range[1]).toDateString())
   })
 }
 
