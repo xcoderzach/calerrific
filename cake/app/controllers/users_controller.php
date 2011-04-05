@@ -34,7 +34,7 @@ class UsersController extends AppController {
 	  $users = $raw['User'];
 	  $res = array();
 	  foreach ($users as $user) {
-		$res[] = array('id' => $user['id'], 'name' => $user['name'], 'status' => $user['EventsUser']['status']);
+		$res[] = array('id' => $user['id'], 'name' => $user['name']);
 	  }
 	  $this->set('json', $res);
 	}

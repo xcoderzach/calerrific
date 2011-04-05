@@ -174,7 +174,7 @@ class EventsController extends AppController {
 	  $tag_id = $this->params['form']['tag_id'];
 
 	  $old = $this->Event->findById($id);
-	  $newTags = $this->_extract_ids($old);
+	  $newTags = $this->_extract_ids($old['Tag']);
 	  $newTags[] = $tag_id;
 	  $newTags = $this->_merge($newTags);
 	  $old['Tag'] = array('Tag' => $newTags);
@@ -209,8 +209,7 @@ class EventsController extends AppController {
 
   function _extract_ids($old) {
 	$res = array();
-	$tags = $old['Tag'];
-	foreach ($tags as $tag) {
+	foreach ($old as $tag) {
 	  $res[] = $tag['id'];
 	}
 	return $res;
@@ -226,6 +225,25 @@ class EventsController extends AppController {
 	  $res[] = $key;
 	}
 	return $res;
+  }
+
+  function attend($id) {
+	$this->view = 'Json';
+
+	$this->Session->write('User.id', 1);
+	if ($this->Session->check('User.id')) {
+	  $old = $this->Event->findById($id);
+	  $userIds = $this->_extract_ids($old['User']);
+	  $userIds[] = $this->Session->read('User.id');
+	  $userIds = $this->_merge($userIds);
+	  $new = array('Event' => array('id' => $id));
+	  $new['User'] = array('User' => $userIds);
+	  $res = $this->Event->save($new);
+	  $this->set('json', $res ? true : false);
+	} else {
+	  $this->set('json', false);
+	}
+	$this->Session->destroy();
   }
 
 }
