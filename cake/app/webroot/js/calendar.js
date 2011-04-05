@@ -8,42 +8,6 @@ var getMonthName = function(month) {
   return months[month]
 }
 
-Date.prototype.getUTCWeek = function() {
-  return Math.floor((this.getUTCDay() + this.getUTCDate() - 1) / 7)
-}
-
-Number.prototype.zeroPad = function(length) {
-  var newString = this.toString()
-  while(newString.length < length) {
-    newString = ("0" + newString)
-  }
-  return newString
-}
-
-Date.prototype.getDaysPerCurrentMonth = function() {
-  var nextMonth
-  if(this.getMonth() != 11) {
-    nextMonth = new Date((new Date(this.getFullYear(), this.getMonth() + 1, 1)) - 1).getDate()
-  } else {
-    nextMonth = new Date((new Date(this.getFullYear() + 1, 0, 1)) - 1).getDate()
-  }
-  return nextMonth
-  
-}
-
-Date.prototype.getYYYYMMDD = function() {
-    var year = this.getUTCFullYear()
-    var month = (this.getUTCMonth()+1).zeroPad()
-    var date = this.getUTCDate().zeroPad()
-    return year + "-" + month + "-" + date
-}
-
-Date.prototype.normalize = function() {
-		return new Date(this.getUTCFullYear()
-                              , this.getUTCMonth()
-                              , this.getUTCDate())
-}
-
 function getMonthRange(year, month) {
 	var starting = year.zeroPad(4) + '-' + month.zeroPad(2) + '-01'
 	var ending = (month === 12 ? year + 1 : year).zeroPad(4) + '-' + (month === 12 ? 1 : month + 1).zeroPad(2) + '-01'
@@ -69,6 +33,7 @@ function getDaysInRange(range) {
 
 function generateRangeData(range, padding, callback) {
 	var data = [];
+
 	function processResult(res) {
 		var dates = JSON.parse(res)
 		var i
@@ -97,18 +62,24 @@ function generateRangeData(range, padding, callback) {
 						 $(".current-month").html(getMonthName(currentMonth-1))
 						 $(".current-year").html(currentYear)
          }
-         })
+  })
+}
+
+function padAndInitMonth(padding) {
+  var data = [] 
+    , i
+	for (i = 0; i < padding; i++) {
+		data.push({day: "&nbsp;"})
+	}
+  return data
 }
 
 // 1-based month
 function generateMonthData(year, month, callback) {
 	var range = getMonthRange(year, month)
 	var padding = new Date(range[0]).getUTCDay()
-	var i
-	var data = []
-	for (i = 0; i < padding; i++) {
-		data.push({day: "&nbsp;"})
-	}
+	var data = padAndInitMonth(padding)
+
 	generateRangeData(range, data, callback)
 }
 
@@ -116,11 +87,8 @@ function generateMonthData(year, month, callback) {
 function generateWeekData(year, month, week, callback) {
 	var range = getWeekRange(year, month, week)
 	var padding = new Date(range[0]).getUTCDay()
-	var i
-	var data = []
-	for (i = 0; i < padding; i++) {
-		data.push({day: "&nbsp;"})
-	}
+	var data = padAndInitMonth(padding)
+
 	generateRangeData(range, data, callback)
 }
 
@@ -138,6 +106,7 @@ function nextMonth() {
   } else {
     currentMonth++
   }
+	switchToMonth(currentYear, currentMonth)
 }
 
 function previousMonth() {
@@ -147,25 +116,17 @@ function previousMonth() {
   } else {
     --currentMonth
   }
+	switchToMonth(currentYear, currentMonth)
 }
-
 
 $(function() {
 	generateMonthData(currentYear, currentMonth, function(data) {
-		var i
-
 		calendar = new LiveView($("#calendar-month"), {"days": data})
+
     $(".current-month").html(getMonthName(currentMonth))
     $(".current-year").html(currentYear)
-		$("#next-month").click(function() {
-			nextMonth()
-			switchToMonth(currentYear, currentMonth)
-		})
 
-		$("#previous-month").click(function() {
-			previousMonth()
-			switchToMonth(currentYear, currentMonth)
-		})
+		$("#next-month").click(nextMonth)
+		$("#previous-month").click(previousMonth)
   })
 })
-

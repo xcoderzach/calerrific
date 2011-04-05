@@ -62,6 +62,12 @@ body {
 .span-week {
   width:14%;
   float:left;
+  text-align:center;
+}
+
+.span-week.day {
+  text-align:left;
+  font-size:14px;
 }
 
 .span-week.last {
