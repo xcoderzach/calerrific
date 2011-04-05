@@ -58,13 +58,11 @@ body {
   height:50px;
 }
 
-.events {
-  list-style:disc;
-  margin:20px;
-}
-
 #calendar-week .event {
   position:absolute;
+  width:100%;
+  padding-left:10px;
+  background: rgba(123, 123, 123, .5)
 }
 
 .span-week {

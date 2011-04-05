@@ -45,8 +45,10 @@ function generateRangeData(range, padding, callback) {
 		for (date in dates) {
 			tmp = new Date(date)
       dates[date].forEach(function(evt) {
-        var seconds = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
-        evt["event"] = {style: "top: " + seconds / 860 + "%;"}
+        var secondsSinceMidnight = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
+        var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
+        console.log(duration)
+        evt["event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
       })
 			formatedDate = {date: tmp.getUTCDate(), events: dates[date]}
       console.log(formatedDate)
