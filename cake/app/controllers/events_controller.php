@@ -11,6 +11,10 @@ class EventsController extends AppController {
 	$url = $this->params['url'];
 	$raw_events = $this->_find_events_raw($url);
 	$rows = $this->_extract_rows($raw_events);
+  foreach($rows as $date => $row) {
+    $rows[$date]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
+    $rows[$date]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
+  }
 	$this->set('json', $this->_format_events($rows));
   }
 
