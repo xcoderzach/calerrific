@@ -2,6 +2,7 @@
 class TagsController extends AppController {
 
 	var $name = 'Tags';
+	var $components = array('Session');
 
 	function index() {
 	  $this->view = 'Json';
@@ -27,6 +28,27 @@ class TagsController extends AppController {
 		$res[] = $row['name'];
 	  }
 	  $this->set('json', $res);
+	}
+
+	function find() {
+	  $this->view = 'Json';
+	  $name = $this->params['url']['name'];
+
+	  // Standard lookup
+	  $res = $this->Tag->findByName($name);
+	  if ($res) {
+		$this->set('json', $res['Tag']['id']);
+		return;
+	  }
+
+	  // Create
+	  if ($this->Session->check('User.id')) {
+		$data = array('Tag' => array('name' => $name));
+		$res = $this->Tag->save($data);
+		$this->set('json', $res ? $res['Tag']['id'] : false);
+	  } else {
+		$this->set('json', false);
+	  }
 	}
 
 }
