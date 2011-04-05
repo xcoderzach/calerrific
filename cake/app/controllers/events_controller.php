@@ -166,5 +166,67 @@ class EventsController extends AppController {
 	return $res;
   }
 
+  function addTag() {
+	$this->view = 'Json';
+
+	if ($this->Session->check('User.id')) {
+	  $id = $this->params['form']['id'];
+	  $tag_id = $this->params['form']['tag_id'];
+
+	  $old = $this->Event->findById($id);
+	  $newTags = $this->_extract_ids($old);
+	  $newTags[] = $tag_id;
+	  $newTags = $this->_merge($newTags);
+	  $old['Tag'] = array('Tag' => $newTags);
+	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
+		$res = $this->Event->save($old);
+		$this->set('json', $res ? true : false);
+	  } else {
+		$this->set('json', false);
+	  }
+	} else {
+	  $this->set('json', false);
+	}
+  }
+
+  function clearTags($id) {
+	$this->view = 'Json';
+
+	if ($this->Session->check('User.id')) {
+
+	  $old = $this->Event->findById($id);
+	  $old['Tag'] = array('Tag' => array());
+	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
+		$res = $this->Event->save($old);
+		$this->set('json', $res ? true : false);
+	  } else {
+		$this->set('json', false);
+	  }
+	} else {
+	  $this->set('json', false);
+	}
+  }
+
+  function _extract_ids($old) {
+	$res = array();
+	$tags = $old['Tag'];
+	foreach ($tags as $tag) {
+	  $res[] = $tag['id'];
+	}
+	return $res;
+  }
+
+  function _merge($arr) {
+	$res = array();
+	$set = array();
+	foreach ($arr as $v) {
+	  $set[$v] = true;
+	}
+	foreach ($set as $key => $val) {
+	  $res[] = $key;
+	}
+	return $res;
+  }
+
 }
 ?>
