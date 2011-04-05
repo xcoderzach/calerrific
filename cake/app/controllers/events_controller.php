@@ -42,7 +42,10 @@ class EventsController extends AppController {
 	  $conditions['user_id'] = $url['user'];
 	}
 	if (isset($url['location'])) {
-	  $conditions['location'] = $url['location'];
+	  $conditions['location LIKE'] = '%'.$url['location'].'%';
+	}
+	if (isset($url['name'])) {
+	  $conditions['name LIKE'] = '%'.$url['name'].'%';
 	}
 	
 	return $this->Event->find('all', array('conditions' => $conditions,
