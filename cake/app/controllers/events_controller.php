@@ -2,6 +2,7 @@
 class EventsController extends AppController {
 
   var $helpers = array("Html", "Form");
+  var $components = array('Session');
   var $name = 'Events';
 	
   function index() {
@@ -32,7 +33,6 @@ class EventsController extends AppController {
 	}
 	if (isset($url['id'])) {
 	  $conditions['id'] = $url['id'];
-	  $type = 'first';
 	}
 	if (isset($url['user'])) {
 	  $conditions['user_id'] = $url['user'];
@@ -41,7 +41,7 @@ class EventsController extends AppController {
 	  $conditions['location'] = $url['location'];
 	}
 	
-	return $this->Event->find($type, array('conditions' => $conditions,
+	return $this->Event->find('all', array('conditions' => $conditions,
 										   'recursive' => 0));
   }
 
@@ -105,6 +105,65 @@ class EventsController extends AppController {
 	  unset($events[$i]['EventsUser']);
 	}
 	$this->set('json', $this->_format_events($events));
+  }
+
+  function create() {
+	$this->view = 'Json';
+
+	$fields = array('name', 'description', 'start_time', 'end_time',
+					'location');
+	$post = $this->params['form'];
+	// Validate more
+	if ($this->Session->check('User.id') &&
+		$this->_validate_fields($post, $fields)) {
+	  $coreData = $this->_extract_fields($post, $fields);
+	  $coreData['user_id'] = $this->Session->read('User.id');
+	  $res = $this->Event->save(array('Event' => $coreData));
+	  $this->set('json', ($res ? true : false));
+	} else {
+	  $this->set('json', false);
+	}
+  }
+
+  function update() {
+	$this->view = 'Json';
+
+	$fields = array('name', 'description', 'start_time', 'end_time',
+					'location');
+	$post = $this->params['form'];
+	// Validate more
+	if ($this->Session->check('User.id') &&
+		$this->_validate_fields($post, $fields)) {
+	  $id = $post['id'];
+	  $coreData = $this->_extract_fields($post, $fields);
+	  $old = $this->Event->findById($id);
+	  $coreData['user_id'] = $old['Event']['user_id'];
+	  $coreData['id'] = $id;
+	  $old['Event'] = $coreData;
+	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
+		$this->Event->set($old);
+		$res = $this->Event->save();
+		$this->set('json', ($res ? true : false));
+		return;
+	  }
+	}
+  }
+
+  function _validate_fields($obj, $fields) {
+	foreach($fields as $field) {
+	  if (!isset($obj[$field]) || $obj[$field] === '') {
+		return false;
+	  }
+	}
+	return true;
+  }
+
+  function _extract_fields($obj, $fields) {
+	$res = array();
+	foreach($fields as $field) {
+	  $res[$field] = $obj[$field];
+	}
+	return $res;
   }
 
 }

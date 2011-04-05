@@ -1,3 +1,4 @@
 lighttpd.conf
 php.ini
 cake/sessions
+*~
