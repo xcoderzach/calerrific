@@ -2,13 +2,16 @@
 class UsersController extends AppController {
 
   var $name = 'Users';
+  var $components = array('Session', 'Auth');
+
+  function beforeFilter() {
+	$this->Auth->allow('*');
+  }
 
 	function index() {
 	  $this->view = "Json";
 
-	  $conditions = array('id' => $this->params['url']['id']);
-	  $params = array('conditions' => $conditions);
-	  $raw = $this->User->find('first', $params);
+	  $raw = $this->User->findById($this->params['url']['id']);
 	  $raw = $raw['User'];
 
 	  $fields = array('name', 'username', 'position', 'email', 'title',
@@ -72,6 +75,31 @@ class UsersController extends AppController {
 		}
 	  }
 	  return true;
+	}
+
+	function login() {
+	  $this->view = 'Json';
+	  // NEVER EVER DO THIS
+	  
+	  $post = $this->params['form'];
+	  $user = $post['username'];
+
+	  $pw = $this->Auth->password($post['pw']);
+	  $record = $this->User->findByUsername($user);
+
+	  if($record['User']['pw'] == $pw) {
+		$this->Session->write('User.id', $record['User']['id']);
+		$this->set('json', true);
+	  } else {
+		$this->set('json', false);
+	  }
+	}
+
+	function logout() {
+	  $this->view = 'Json';
+
+	  $this->Session->destroy();
+	  $this->set('json', true);
 	}
   }
 ?>
