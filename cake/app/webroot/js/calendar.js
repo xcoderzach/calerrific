@@ -1,6 +1,7 @@
 var monthView
   , weekView
   , now = new Date()
+  , currentView
   , currentMonth = now.getUTCMonth() + 1
   , currentYear =  now.getUTCFullYear()
   , currentWeek = now.getUTCWeekOfYear()
@@ -47,7 +48,7 @@ function generateRangeData(range, padding, callback) {
       dates[date].forEach(function(evt) {
         var secondsSinceMidnight = (new Date(parseInt(evt.start_timestamp))).secondsSinceMidnight()
         var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
-        evt.event = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
+        evt["week-event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
         console.log((new Date(parseInt(evt.start_timestamp))).getHours())
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
       })
@@ -98,15 +99,14 @@ function generateWeekData(year, week, callback) {
 }
 
 function switchToMonth(year, month) {
-  var data = generateMonthData(year, month, function(data) {
+  generateMonthData(year, month, function(data) {
     monthView.days.removeAll()
     monthView.days.create(data)
   })
 }
 
 function switchToWeek(year, week) {
-  console.log(week)
-  var data = generateWeekData(year, week, function(data) {
+  generateWeekData(year, week, function(data) {
     weekView.days.removeAll()
     weekView.days.create(data)
   })
@@ -152,25 +152,45 @@ function previousWeek() {
 	switchToWeek(currentYear, currentWeek)
 }
  
-
-$(function() {
-  generateWeekData(currentYear, currentWeek, function(data) {
+function initWeekView() {
+   generateWeekData(currentYear, currentWeek, function(data) {
 		weekView = new LiveView($("#calendar-week"), {"days": data})
+  })   
+}
 
-    $(".current-month").html(getMonthName(currentMonth))
-    $(".current-year").html(currentYear)
-
-		$("#next-week").click(nextWeek)
-		$("#previous-week").click(previousWeek)
-  }) 
-  /*
+function initMonthView() {
 	generateMonthData(currentYear, currentMonth, function(data) {
 		monthView = new LiveView($("#calendar-month"), {"days": data})
+  }) 
+}
 
-    $(".current-month").html(getMonthName(currentMonth))
-    $(".current-year").html(currentYear)
+function showView(view) {
+  if(view === "month" && currentView !== "month") {
+    $("#calendar-week").hide()
+    $("#calendar-month").show()
+    $("#month-controls").show()
+    $("#week-controls").hide()
+    switchToMonth(currentYear, currentMonth)
+  } else if(view === "week" && currentView !== "week") {
+    $("#calendar-month").hide()
+    $("#calendar-week").show()
+    $("#month-controls").hide()
+    $("#week-controls").show()
+    switchToWeek(currentYear, currentWeek)
+  }
+  currentView = view
+}
 
-		$("#next-month").click(nextMonth)
-		$("#previous-month").click(previousMonth)
-  }) */
+$(function() {
+  initMonthView()
+  setTimeout(initWeekView, 1000)
+  showView("month")
+  $("#month-view").click(function() { showView("month") })
+  $("#week-view").click(function() { showView("week") })
+ 
+	$("#next-week").click(nextWeek)
+	$("#previous-week").click(previousWeek) 
+
+	$("#next-month").click(nextMonth)
+	$("#previous-month").click(previousMonth)
 })

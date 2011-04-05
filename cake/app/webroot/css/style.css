@@ -58,7 +58,7 @@ body {
   height:50px;
 }
 
-#calendar-week .event {
+#calendar-week .week-event {
   position:absolute;
   width:100%;
   padding-left:10px;
