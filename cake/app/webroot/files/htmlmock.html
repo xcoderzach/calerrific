@@ -8,23 +8,25 @@
 		<script type="text/javascript" src="/js/jquery-ui-1.8.11.custom.min.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "http://documentcloud.github.com/underscore/underscore-min.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "https://github.com/xcoderzach/LiveView/raw/master/src/live_view.js"></script>
-    <script type = "text/javascript" charset = "utf-8" src = "/js/calendar.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/dateUtils.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "/js/calendar.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/css/custom-theme/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
   </head>
   <body>
-	<div id = "nav" class = "ui-widget-header">
-      <span id = "previous-month" class = "ui-state-default">Previous month</span>
-      <span id = "current-date">
-				<span class = "current-month"></span>
-				<span class = "current-year"></span>
-      </span>
-      <span id = "next-month" class = "ui-state-default ui-corner-all">Next month</span>
-	</div>
-    <div id = "calendar-month">
+    <div id = "nav" class = "ui-widget-header">
+        <span id = "previous-week" class = "ui-state-default">Previous week</span>
+        <span id = "previous-month" class = "ui-state-default">Previous month</span>
+        <span id = "current-date">
+          <span class = "current-month"></span>
+          <span class = "current-year"></span>
+        </span>
+        <span id = "next-month" class = "ui-state-default ui-corner-all">Next month</span>
+        <span id = "next-week" class = "ui-state-default ui-corner-all">Next week</span>
+    </div>
+    <div id = "calendar-month" style = "display:none;">
       <ul id = "week-header">
         <li class = "span-week">Sunday</li>
         <li class = "span-week">Monday</li>
@@ -32,7 +34,26 @@
         <li class = "span-week">Wednesday</li>
         <li class = "span-week">Thursday</li>
         <li class = "span-week">Friday</li>
-        <li class = "span-week last">Saturday</li>
+        <li class = "span-week">Saturday</li>
+      </ul>
+      <ul class = "days">
+        <li class = "day span-week ui-widget-content">
+          <div class = "date"></div>
+          <div class = "events">
+            <div class = "name"></div>
+          </div>
+        </li>
+      </ul>
+    </div>  
+    <div id = "calendar-week">
+      <ul id = "week-header">
+        <li class = "span-week">Sunday</li>
+        <li class = "span-week">Monday</li>
+        <li class = "span-week">Tuesday</li>
+        <li class = "span-week">Wednesday</li>
+        <li class = "span-week">Thursday</li>
+        <li class = "span-week">Friday</li>
+        <li class = "span-week">Saturday</li>
       </ul>
       <ul class = "days">
         <li class = "day span-week ui-widget-content">
@@ -45,3 +66,4 @@
     </div>
   </body>
 </html>
+
