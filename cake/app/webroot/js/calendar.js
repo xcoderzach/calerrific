@@ -39,7 +39,7 @@ function generateRangeData(range, padding, callback) {
 		var starting = nextDate.getUTCDate()-1
 
 		for (i = starting ; i < starting + getDaysInRange(range) ; i++) {
-			data.push({date: nextDate.getUTCDate()})
+			data.push({date: nextDate.getUTCDate(), events: []})
       nextDate = nextDate.tomorrow()
 		}
 		for (date in dates) {
