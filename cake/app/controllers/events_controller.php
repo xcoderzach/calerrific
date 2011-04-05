@@ -250,5 +250,21 @@ class EventsController extends AppController {
 	$this->Session->destroy();
   }
 
+  function delete($id) {
+	$this->view = 'Json';
+
+	$old = $this->Event->findById($id);
+	if ($this->Session->check('User.id')) {
+	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
+		$this->Event->delete($id);
+		$this->set('json', true);
+	  } else {
+		$this->set('json', true);
+	  }
+	} else {
+		$this->set('json', true);
+	}
+  }
+
 }
 ?>
