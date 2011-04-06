@@ -41,7 +41,16 @@ $(function() {
     $("#event-description").val(evt.description)
     $("#event-location").val(evt.location) 
     $("#event-id").val(evt.id) 
-      
   })
+
+  $(".cancel-event-button").live("click", function() {
+    var id = $(this).parent().attr("data-event")
+    $.get("/events/delete/" + id, data)
+    .success(function() {
+      $(this).parent().remove()
+      switchToMonth(currentYear, currentMonth)
+      switchToWeek(currentYear, currentWeek)
+    }) 
+  }
 
 })

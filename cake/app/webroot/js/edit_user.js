@@ -39,9 +39,9 @@ $(function () {
     $("#confirm_password").val("")
     
     $.ajax({url: '/users/update',
-        data: data,
-        success: display,
-        error: display
-         });
+      data: data,
+      success: display,
+      error: display
+    });
   });
 });
