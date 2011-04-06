@@ -288,10 +288,10 @@ class EventsController extends AppController {
 		$this->Event->delete($id);
 		$this->set('json', true);
 	  } else {
-		$this->set('json', true);
+		$this->set('json', false);
 	  }
 	} else {
-		$this->set('json', true);
+		$this->set('json', false);
 	}
   }
 
