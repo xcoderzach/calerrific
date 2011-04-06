@@ -4,13 +4,15 @@
   
     <title>Htmlmock</title>
 
-		<script type = "text/javascript" src="/js/jquery-1.5.1.min.js"></script>
-		<script type = "text/javascript" src="/js/jquery-ui-1.8.11.custom.min.js"></script>
+		<script type = "text/javascript" src = "/js/jquery-1.5.1.min.js"></script>
+		<script type = "text/javascript" src = "/js/jquery-ui-1.8.11.custom.min.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "/js/jquery.ui.timepicker.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/live_view.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/dateUtils.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/calendar.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/edit_user.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/login.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "/js/event.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
@@ -101,6 +103,8 @@
               <span class = "name"></span>,&nbsp;
             </span>
           </span>
+          <button class = "edit-event-button">edit</button>
+          <button class = "attend-button">Attend Event</button>
         </div> 
       </div>
     </div>
@@ -111,18 +115,22 @@
         Email: <input type="text" name="email" id="email" />
         Title: <input type="text" name="title" id="title" />
         Department: <input type="text" name="department" id="department" />
+        Password: <input type="password" name="password" id="password" />
+        Confirm Password: <input type="password" name="confirm_password" id="confirm_password" />
         <input type="button" id="submit" value="Change" />
-        <input type="hidden" id="id" name="id" />
+        <input type="hidden" id="event-id" name="id" />
       </form> 
     </div>
-    <div id = "event-create" style = "display:none;">
+    <div id = "event-create">
       <form id = "create-form" method = "post">
-        Name: <input type="text" name="name" id="name" />
-        Position: <input type="text" name="position" id="position" />
-        Email: <input type="text" name="email" id="email" />
-        Title: <input type="text" name="title" id="title" />
-        Department: <input type="text" name="department" id="department" />
-        <input type="button" id="submit" value="Change" />
+        Name: <input type="text" name="name" id="event-name" />
+        Description: <input type="text" name="description" id="event-description" />
+        Start Date: <input type="text" name="start_date" id="event-start-date" />
+        Start Time: <input type="text" name="start_time" id="event-start-time" />
+        End Date: <input type="text" name="end_date" id="event-end-date" />
+        End Time: <input type="text" name="end_time" id="event-end-time" />
+        location: <input type="text" name="location" id="event-location" />
+        <input type="submit" id="submit" value="Go" />
         <input type="hidden" id="id" name="id" />
       </form> 
     </div> 
