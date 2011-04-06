@@ -52,7 +52,6 @@ function generateRangeData(range, padding, callback) {
         var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
         evt["week-event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
         evt["event"] = {"data-event": evt.id}
-        console.log((new Date(parseInt(evt.start_timestamp))).getHours())
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
         eventRegistry[evt.id] = evt
       })
@@ -223,27 +222,28 @@ $(function() {
 
 	$("#next-month").click(nextMonth)
 	$("#previous-month").click(previousMonth)
-  console.log($("#search-box"))
-  $("#search-box").change(function() {
-    console.log("w00t")
+
+  $("#search-box").keyup(function() {
     var id = $(this).attr("data-event")
     var evt
     $.get("/events/search", {q: $(this).val()}).success(function(data) {
       data = JSON.parse(data)
       events = []
       for(var i in data) {
-        console.log(i)
-        console.log(data[i])
         events = events.concat(data[i])
       }
       for(i in events) {
         evt = events[i]
         evt["event"] = {"data-event": evt.id}
-        console.log((new Date(parseInt(evt.start_timestamp))).getHours())
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
         eventRegistry[evt.id] = evt 
       }
-        eventView.events.removeAll()
+      if(events.length == 0) {
+        $("#calendar-event .error").show()
+      } else {
+        $("#calendar-event .error").hide()
+      }
+      eventView.events.removeAll()
       eventView.events.create(events)
     })
     showView("event")

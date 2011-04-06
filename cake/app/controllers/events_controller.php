@@ -35,6 +35,9 @@ class EventsController extends AppController {
   function search() {
     $this->view = "Json";
     $query = $this->params['url']['q'];
+    if(trim($query) == '') {
+      $query = "sdfsdfsdflfdfsdfdsfsdkfjhksdfouurwyeqouriyweoyrwqiryweqioryh";
+    }
     $query = '%' . preg_replace('/\s+/', '%', $query) . '%';
 	  $conditions['search_index LIKE'] = $query;
     $raw = $this->Event->find('all', array('conditions' => $conditions, 'recursive' => 1));
@@ -50,6 +53,7 @@ class EventsController extends AppController {
 
   function _extract_rows($raw_events) {
     $res = array();
+
     foreach ($raw_events as $row) {
       $row['Event']['tags'] = $row['Tag'];
       $row['Event']['attendees'] = $row['User'];
