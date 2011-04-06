@@ -3,57 +3,6 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<title>User editor</title>
 	<script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
-	<script type="text/javascript">
 
-	function display() {
-		$.ajax({url: '/users/id',
-				success: function (id) {
-					var userId = JSON.parse(id);
-					$.ajax({url: '/users?id=' + userId,
-							success: function (res) {
-								var props = JSON.parse(res);
-								$("#name").attr('value', props['name']);
-								$("#position").attr('value', props['position']);
-								$("#email").attr('value', props['email']);
-								$("#title").attr('value', props['title']);
-								$("#department").attr('value', props['department']);
-								$("#id").attr('value', userId);
-							}});
-				}});
-	}
-
-$(display);
-
-$(function () {
-$("#submit").click(function () {
-	var data = {
-		name: $("#name").attr('value'),
-		position: $("#position").attr('value'),
-		email: $("#email").attr('value'),
-		title: $("#title").attr('value'),
-		department: $("#department").attr('value'),
-		id: $("#id").attr('value')
-	};
-	
-	$.ajax({url: '/users/update',
-			data: data,
-			success: display,
-			error: display
-		   });
-});
-});
-
- </script>
   </head>
-  <body>
-	<form id="form" method="post">
-	Name: <input type="text" name="name" id="name" />
-	Position: <input type="text" name="position" id="position" />
-	Email: <input type="text" name="email" id="email" />
-	Title: <input type="text" name="title" id="title" />
-	Department: <input type="text" name="department" id="department" />
-	<input type="button" id="submit" value="Change" />
-	<input type="hidden" id="id" name="id" />
-	</form>
-  </body>
 </html>

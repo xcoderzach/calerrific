@@ -92,7 +92,7 @@ class UsersController extends AppController {
 
 	  $pw = $this->Auth->password($post['pw']);
 	  $record = $this->User->findByUsername($user);
-	  
+
 	  if($record['User']['pw'] == $pw) {
 		$this->Session->write('User.id', $record['User']['id']);
 		$this->set('json', true);
