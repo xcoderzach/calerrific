@@ -52,7 +52,7 @@ class UsersController extends AppController {
 	  if ($this->Session->check('User.id')) {
 		$id = $post['id'];
 		$coreData = $this->_extract_fields($post, $fields);
-		if (issset($coreData['pw'])) {
+		if (isset($coreData['pw'])) {
 		  $coreData['pw'] = $this->Auth->password($coreData['pw']);
 		}
 		$old = $this->User->findById($id);
