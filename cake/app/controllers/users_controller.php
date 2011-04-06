@@ -47,15 +47,14 @@ class UsersController extends AppController {
 
 	  $fields = array('name', 'username', 'position', 'email',
 					  'title', 'deparment');
-	  $post = $this->params['form'];
+	  $post = $this->params['url'];
 	  // Validate more
-	  if ($this->Session->check('User.id') &&
-		  $this->_validate_fields($post, $fields)) {
+	  if ($this->Session->check('User.id')) {
 		$id = $post['id'];
 		$coreData = $this->_extract_fields($post, $fields);
 		$old = $this->User->findById($id);
 		$coreData['id'] = $id;
-		$old['User'] = $coreData;
+		$old['User'] = $this->_merge_maps($old['User'], $coreData);
 		if ($id == $this->Session->read('User.id')) {
 		  $this->User->set($old);
 		  $res = $this->User->save();
@@ -66,6 +65,13 @@ class UsersController extends AppController {
 	  } else {
 		$this->set('json', false);
 	  }
+	}
+
+	function _merge_maps($base, $new) {
+	  foreach ($new as $key => $val) {
+		$base[$key] = $val;
+	  }
+	  return $base;
 	}
 
 	function _validate_fields($obj, $fields) {
@@ -81,12 +87,12 @@ class UsersController extends AppController {
 	  $this->view = 'Json';
 	  // NEVER EVER DO THIS
 	  
-	  $post = $this->params['form'];
+	  $post = $this->params['url'];
 	  $user = $post['username'];
 
 	  $pw = $this->Auth->password($post['pw']);
 	  $record = $this->User->findByUsername($user);
-
+	  
 	  if($record['User']['pw'] == $pw) {
 		$this->Session->write('User.id', $record['User']['id']);
 		$this->set('json', true);
@@ -100,6 +106,16 @@ class UsersController extends AppController {
 
 	  $this->Session->destroy();
 	  $this->set('json', true);
+	}
+
+	function id() {
+	  $this->view = 'Json';
+	  
+	  if ($this->Session->check('User.id')) {
+		$this->set('json', $this->Session->read('User.id'));
+	  } else {
+		$this->set('json', false);
+	  }
 	}
   }
 ?>
