@@ -1,4 +1,5 @@
 $(function() {
+
   $("#login").submit(function(e) {
     e.preventDefault()
     var data = {

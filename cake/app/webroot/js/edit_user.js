@@ -16,20 +16,20 @@
 	}
 
 $(function () {
-$("#submit").click(function () {
-	var data = {
-		name: $("#name").attr('value'),
-		position: $("#position").attr('value'),
-		email: $("#email").attr('value'),
-		title: $("#title").attr('value'),
-		department: $("#department").attr('value'),
-		id: $("#id").attr('value')
-	};
-	
-	$.ajax({url: '/users/update',
-			data: data,
-			success: display,
-			error: display
-		   });
-});
+  $("#submit").click(function () {
+    var data = {
+      name: $("#name").attr('value'),
+      position: $("#position").attr('value'),
+      email: $("#email").attr('value'),
+      title: $("#title").attr('value'),
+      department: $("#department").attr('value'),
+      id: $("#id").attr('value')
+    };
+    
+    $.ajax({url: '/users/update',
+        data: data,
+        success: display,
+        error: display
+         });
+  });
 });
