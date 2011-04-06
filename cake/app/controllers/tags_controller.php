@@ -45,7 +45,8 @@ class TagsController extends AppController {
 	  }
 
 	  // Create
-	  if ($create && $this->Session->check('User.id')) {
+	  if ($create && $this->Session->check('User.id') &&
+		  $name != '') {
 		$data = array('Tag' => array('name' => $name));
 		$res = $this->Tag->save($data);
 		return $res ? $res['Tag']['id'] : false;
@@ -66,7 +67,9 @@ class TagsController extends AppController {
 	$res = array();
 	$set = array();
 	foreach ($arr as $v) {
-	  $set[$v] = true;
+	  if ($v !== false) {
+		$set[$v] = true;
+	  }
 	}
 	foreach ($set as $key => $val) {
 	  $res[] = $key;
