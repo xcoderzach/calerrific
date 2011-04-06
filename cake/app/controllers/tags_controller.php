@@ -37,7 +37,7 @@ class TagsController extends AppController {
 	  $this->set('json', $this->_find($name));
 	}
 	
-	function _find($name) {
+	function _find($name, $create = false) {
 	  // Standard lookup
 	  $res = $this->Tag->findByName($name);
 	  if ($res) {
@@ -45,7 +45,7 @@ class TagsController extends AppController {
 	  }
 
 	  // Create
-	  if ($this->Session->check('User.id')) {
+	  if ($create && $this->Session->check('User.id')) {
 		$data = array('Tag' => array('name' => $name));
 		$res = $this->Tag->save($data);
 		return $res ? $res['Tag']['id'] : false;
@@ -84,7 +84,7 @@ class TagsController extends AppController {
 	  $old = $this->Event->findById($id);
 	  $newTags = $this->_extract_ids($old['Tag']);
 	  for ($i = 0; $i < count($tags); $i++) {
-		$newTags[] = $this->_find(trim($tags[$i]));
+		$newTags[] = $this->_find(trim($tags[$i]), true);
 	  }
 	  $newTags = $this->_merge($newTags);
 	  $old['Tag'] = array('Tag' => $newTags);
