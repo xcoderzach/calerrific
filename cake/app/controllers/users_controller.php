@@ -22,9 +22,9 @@ class UsersController extends AppController {
 	function _extract_fields($obj, $fields) {
 	  $res = array();
 	  foreach ($fields as $field) {
-		if (isset($obj[$field]) && $obj[$field] != '') {
-		  $res[$field] = $obj[$field];
-		}
+      if (isset($obj[$field]) && $obj[$field] != '') {
+        $res[$field] = $obj[$field];
+      }
 	  }
 	  return $res;
 	}

@@ -45,12 +45,20 @@ $(function() {
 
   $(".cancel-event-button").live("click", function() {
     var id = $(this).parent().attr("data-event")
-    $.get("/events/delete/" + id, data)
+    $.get("/events/delete/" + id)
     .success(function() {
       $(this).parent().remove()
       switchToMonth(currentYear, currentMonth)
       switchToWeek(currentYear, currentWeek)
     }) 
-  }
+  })
+
+  $(".attend-event-button").live("click", function() {
+    var id = $(this).parent().attr("data-event")
+    $.get("/events/attend/" + id)
+    .success(function() {
+      showView("month")
+    })
+  }) 
 
 })
