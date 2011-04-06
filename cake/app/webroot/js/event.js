@@ -21,8 +21,12 @@ $(function() {
     } else {
       var url = "/events/create"
     }
+
+    
     $.get(url, data)
-    .success(function() {
+    .success(function(ret) {
+      var id = $("#event-id").val() || JSON.parse(ret)
+      $.get("/tags/add",{id: id, tags: $("#event-tags").val()})
       switchToMonth(currentYear, currentMonth)
       switchToWeek(currentYear, currentWeek)
     })

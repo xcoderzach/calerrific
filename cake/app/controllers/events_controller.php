@@ -164,7 +164,7 @@ class EventsController extends AppController {
 	  $coreData['user_id'] = $this->Session->read('User.id');
 	  $coreData['search_index'] = strtolower(implode(" ", $coreData));
 	  $res = $this->Event->save(array('Event' => $coreData));
-	  $this->set('json', ($res ? true : false));
+	  $this->set('json', ($res ? $res["Event"]["id"] : false));
 	} else {
 	  $this->set('json', false);
 	}

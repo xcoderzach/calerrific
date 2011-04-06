@@ -13,6 +13,7 @@
     <script type = "text/javascript" charset = "utf-8" src = "/js/edit_user.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/login.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/event.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "/js/tagger.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
@@ -116,7 +117,7 @@
       </div>
     </div>
     <div id = "user-edit" style = "">
-      <form id="user-edit-form" method="post">
+      <form id="user-edit-form" method="post" autocomplete = "off">
         Name: <input type="text" name="name" id="name" />
         Position: <input type="text" name="position" id="position" />
         Email: <input type="text" name="email" id="email" />
@@ -129,14 +130,15 @@
       </form> 
     </div>
     <div id = "event-create">
-      <form id = "create-form" method = "post">
+      <form id = "create-form" method = "post" autocomplete = "off">
         Name: <input type="text" name="name" id="event-name" />
         Description: <input type="text" name="description" id="event-description" />
         Start Date: <input type="text" name="start_date" id="event-start-date" />
         Start Time: <input type="text" name="start_time" id="event-start-time" />
         End Date: <input type="text" name="end_date" id="event-end-date" />
         End Time: <input type="text" name="end_time" id="event-end-time" />
-        location: <input type="text" name="location" id="event-location" />
+        Location: <input type="text" name="location" id="event-location" />
+        Tags: <input type="text" name="tags" id="event-tags" />
         <input type="submit" id="submit" value="Go" />
         <input type="hidden" id="id" name="id" />
       </form> 
