@@ -6,17 +6,30 @@ class EventsController extends AppController {
   var $name = 'Events';
 	
   function index() {
-	$this->view = "Json";
+    $this->view = "Json";
 
-	$url = $this->params['url'];
-	$raw_events = $this->_find_events_raw($url);
-  $rows = $this->_extract_rows($raw_events);
+    $url = $this->params['url'];
+    $raw_events = $this->_find_events_raw($url);
+    $rows = $this->_extract_rows($raw_events);
 
-  foreach($rows as $index => $row) {
-    $rows[$index]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
-    $rows[$index]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
+    foreach($rows as $index => $row) {
+      $rows[$index]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
+      $rows[$index]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
+    }
+    $this->set('json', $this->_format_events($rows));
   }
-	$this->set('json', $this->_format_events($rows));
+
+  function _makeSearchable() {
+    $raw = $this->Event->find('all', array('recursive' => 1));
+    foreach($raw as $item) {
+      $id = $item["Event"]["id"];
+      $index = implode(" ", $item["Event"]).
+               implode(" ", $item["Tag"]).
+               implode(" ", $item["Owner"]).
+               implode(" ", $item["User"]);
+      $this->Event->id = $id;
+      $this->Event->save(array('search_index' => $index));
+    }
   }
 
   function search() {
@@ -36,14 +49,14 @@ class EventsController extends AppController {
   }  
 
   function _extract_rows($raw_events) {
-	$res = array();
-	foreach ($raw_events as $row) {
-    $row['Event']['tags'] = $row['Tag'];
-    $row['Event']['attendees'] = $row['User'];
-    $row['Event']['owner'] = $row['Owner'];
-	  $res[] = $row['Event'];
-	}
-	return $res;
+    $res = array();
+    foreach ($raw_events as $row) {
+      $row['Event']['tags'] = $row['Tag'];
+      $row['Event']['attendees'] = $row['User'];
+      $row['Event']['owner'] = $row['Owner'];
+      $res[] = $row['Event'];
+    }
+    return $res;
   }
 
   function _find_events_raw($url) {
@@ -174,6 +187,7 @@ class EventsController extends AppController {
 		$this->Event->set($old);
 		$res = $this->Event->save();
 		$this->set('json', ($res ? true : false));
+    $this->_makeSearchable();
 		return;
 	  }
 	}
@@ -210,6 +224,7 @@ class EventsController extends AppController {
 	  $old['Tag'] = array('Tag' => $newTags);
 	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
 		$res = $this->Event->save($old);
+    $this->_makeSearchable();
 		$this->set('json', $res ? true : false);
 	  } else {
 		$this->set('json', false);
@@ -228,6 +243,7 @@ class EventsController extends AppController {
 	  $old['Tag'] = array('Tag' => array());
 	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
 		$res = $this->Event->save($old);
+    $this->_makeSearchable();
 		$this->set('json', $res ? true : false);
 	  } else {
 		$this->set('json', false);
@@ -269,6 +285,7 @@ class EventsController extends AppController {
 	  $new = array('Event' => array('id' => $id));
 	  $new['User'] = array('User' => $userIds);
 	  $res = $this->Event->save($new);
+    $this->_makeSearchable();
 	  $this->set('json', $res ? true : false);
 	} else {
 	  $this->set('json', false);
