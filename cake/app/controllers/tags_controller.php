@@ -132,6 +132,16 @@ class TagsController extends AppController {
     }
   }
 
+  function all() {
+	$this->view = 'Json';
+	
+	$all = $this->Tag->find('all', array('recursive' => 0));
+	$res = array();
+	foreach ($all as $tag) {
+	  $res[] = $tag['Tag']['name'];
+	}
+	$this->set('json', $res);
+  }
 
 }
 ?>
