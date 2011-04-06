@@ -10,13 +10,30 @@ class EventsController extends AppController {
 
 	$url = $this->params['url'];
 	$raw_events = $this->_find_events_raw($url);
-	$rows = $this->_extract_rows($raw_events);
-  foreach($rows as $date => $row) {
-    $rows[$date]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
-    $rows[$date]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
+  $rows = $this->_extract_rows($raw_events);
+
+  foreach($rows as $index => $row) {
+    $rows[$index]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
+    $rows[$index]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
   }
 	$this->set('json', $this->_format_events($rows));
   }
+
+  function search() {
+    $this->view = "Json";
+    $query = $this->params['url']['q'];
+    $query = '%' . preg_replace('/\s+/', '%', $query) . '%';
+	  $conditions['search_index LIKE'] = $query;
+    $raw = $this->Event->find('all', array('conditions' => $conditions, 'recursive' => 0));
+    $rows = $this->_extract_rows($raw);
+
+    foreach($rows as $index => $row) {
+      $rows[$index]["start_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["start_time"])->getTimestamp() * 1000;
+      $rows[$index]["end_timestamp"] = DateTime::createFromFormat("Y-m-d H:i:s", $row["end_time"])->getTimestamp() * 1000;
+    }
+
+    $this->set('json', $this->_format_events($rows));
+  }  
 
   function _extract_rows($raw_events) {
 	$res = array();
@@ -61,7 +78,7 @@ class EventsController extends AppController {
 	// set are the keys of the array with true values.
 	foreach ($rows as $actual_data) {
 	  $id_map[$actual_data['id']] = $actual_data;
-	  
+
 	  $time = $this->_datetime_to_date($actual_data['start_time']);
 	  $map = isset($day_map[$time]) ? $day_map[$time] : array();
 	  $map[$actual_data['id']] = true;
