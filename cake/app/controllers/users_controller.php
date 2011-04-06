@@ -46,12 +46,15 @@ class UsersController extends AppController {
 	  $this->view = 'Json';
 
 	  $fields = array('name', 'username', 'position', 'email',
-					  'title', 'deparment');
+					  'title', 'deparment', 'pw');
 	  $post = $this->params['url'];
 	  // Validate more
 	  if ($this->Session->check('User.id')) {
 		$id = $post['id'];
 		$coreData = $this->_extract_fields($post, $fields);
+		if (issset($coreData['pw'])) {
+		  $coreData['pw'] = $this->Auth->password($coreData['pw']);
+		}
 		$old = $this->User->findById($id);
 		$coreData['id'] = $id;
 		$old['User'] = $this->_merge_maps($old['User'], $coreData);
