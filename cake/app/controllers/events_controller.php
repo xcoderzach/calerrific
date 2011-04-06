@@ -24,7 +24,7 @@ class EventsController extends AppController {
     $query = $this->params['url']['q'];
     $query = '%' . preg_replace('/\s+/', '%', $query) . '%';
 	  $conditions['search_index LIKE'] = $query;
-    $raw = $this->Event->find('all', array('conditions' => $conditions, 'recursive' => 0));
+    $raw = $this->Event->find('all', array('conditions' => $conditions, 'recursive' => 1));
     $rows = $this->_extract_rows($raw);
 
     foreach($rows as $index => $row) {
@@ -38,6 +38,9 @@ class EventsController extends AppController {
   function _extract_rows($raw_events) {
 	$res = array();
 	foreach ($raw_events as $row) {
+    $row['Event']['tags'] = $row['Tag'];
+    $row['Event']['attendees'] = $row['User'];
+    $row['Event']['owner'] = $row['Owner'];
 	  $res[] = $row['Event'];
 	}
 	return $res;
@@ -66,7 +69,7 @@ class EventsController extends AppController {
 	}
 	
 	return $this->Event->find('all', array('conditions' => $conditions,
-										   'recursive' => 0));
+										   'recursive' => 1));
   }
 
   function _format_events($rows) {
