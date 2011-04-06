@@ -69,7 +69,7 @@ class EventsController extends AppController {
 	  $conditions['end_time <='] = $url['end'].' 00:00:00';
 	}
 	if (isset($url['id'])) {
-	  $conditions['id'] = $url['id'];
+	  $conditions['Event.id'] = $url['id'];
 	}
 	if (isset($url['user'])) {
 	  $conditions['user_id'] = $url['user'];
