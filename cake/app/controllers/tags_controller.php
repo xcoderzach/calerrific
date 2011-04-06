@@ -49,7 +49,7 @@ class TagsController extends AppController {
 		  $name != '') {
 		$data = array('Tag' => array('name' => $name));
 		$res = $this->Tag->save($data);
-		return $res ? $res['Tag']['id'] : false;
+		return $res ? $this->Tag->id : false;
 	  } else {
 		return false;
 	  }
