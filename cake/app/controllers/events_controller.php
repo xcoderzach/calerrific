@@ -262,7 +262,6 @@ class EventsController extends AppController {
   function attend($id) {
 	$this->view = 'Json';
 
-	$this->Session->write('User.id', 1);
 	if ($this->Session->check('User.id')) {
 	  $old = $this->Event->findById($id);
 	  $userIds = $this->_extract_ids($old['User']);
@@ -271,12 +270,11 @@ class EventsController extends AppController {
 	  $new = array('Event' => array('id' => $id));
 	  $new['User'] = array('User' => $userIds);
 	  $res = $this->Event->save($new);
-    $this->_makeSearchable();
+	  $this->_makeSearchable();
 	  $this->set('json', $res ? true : false);
 	} else {
 	  $this->set('json', false);
 	}
-	$this->Session->destroy();
   }
 
   function delete($id) {
