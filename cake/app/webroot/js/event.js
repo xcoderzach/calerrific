@@ -22,7 +22,6 @@ $(function() {
       var url = "/events/create"
     }
 
-    
     $.get(url, data)
     .success(function(ret) {
       var id = $("#event-id").val() || JSON.parse(ret)

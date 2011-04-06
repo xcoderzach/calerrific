@@ -8,6 +8,7 @@ var monthView
   , currentWeek = now.getUTCWeekOfYear()
   , months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   , eventRegistry = {}
+  , userRegistry = {}
 
 var getMonthName = function(month) {
   return months[month]
@@ -52,6 +53,12 @@ function generateRangeData(range, padding, callback) {
         var duration = parseInt(evt.end_timestamp) - parseInt(evt.start_timestamp)
         evt["week-event"] = {style: "top: " + secondsSinceMidnight / 860 + "%; height: " + duration / 860000 + "%;"}
         evt["event"] = {"data-event": evt.id}
+        userRegistry[evt.owner.id] = evt.owner
+        for(var i in evt.attendees) {
+          userRegistry[evt.attendees[i].id] = evt.attendees[i]
+          evt.attendees[i].name = {content: evt.attendees[i].name, "data-user": evt.owner.id}
+        }
+        evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
         eventRegistry[evt.id] = evt
       })
@@ -188,6 +195,7 @@ function showView(view) {
 
     $("#calendar-week").hide()
     $("#week-controls").hide()
+    $("#calendar-user").hide()
     switchToMonth(currentYear, currentMonth)
   } else if(view === "week" && currentView !== "week") {
     $("#calendar-month").hide()
@@ -197,6 +205,7 @@ function showView(view) {
 
     $("#calendar-week").show()
     $("#week-controls").show()
+    $("#calendar-user").hide()
     switchToWeek(currentYear, currentWeek)
   } else if(view === "event" && currentView !== "event") {
     $("#calendar-event").show()
@@ -204,7 +213,15 @@ function showView(view) {
     $("#calendar-week").hide()
     $("#month-controls").hide()
     $("#week-controls").hide()
-  } 
+    $("#calendar-user").hide()
+  } else if (view === "user" && currentView !== "user") {
+    $("#calendar-event").hide()
+    $("#calendar-month").hide()
+    $("#calendar-week").hide()
+    $("#month-controls").hide()
+    $("#week-controls").hide() 
+    $("#calendar-user").show()
+  }
   currentView = view
 }
 
@@ -235,6 +252,10 @@ $(function() {
       for(i in events) {
         evt = events[i]
         evt["event"] = {"data-event": evt.id}
+        evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
+        for(var i in evt.attendees) {
+          evt.attendees[i].name = {content: evt.attendees[i].name, "data-user": evt.owner.id}
+        }
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
         eventRegistry[evt.id] = evt 
       }

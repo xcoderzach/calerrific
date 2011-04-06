@@ -152,22 +152,22 @@ class EventsController extends AppController {
   }
 
   function create() {
-	$this->view = 'Json';
+    $this->view = 'Json';
 
-	$fields = array('name', 'description', 'start_time', 'end_time',
-					'location');
-	$post = $this->params['url'];
-	// Validate more
-	if ($this->Session->check('User.id') &&
-		$this->_validate_fields($post, $fields)) {
-	  $coreData = $this->_extract_fields($post, $fields);
-	  $coreData['user_id'] = $this->Session->read('User.id');
-	  $coreData['search_index'] = strtolower(implode(" ", $coreData));
-	  $res = $this->Event->save(array('Event' => $coreData));
-	  $this->set('json', ($res ? $res["Event"]["id"] : false));
-	} else {
-	  $this->set('json', false);
-	}
+    $fields = array('name', 'description', 'start_time', 'end_time',
+            'location');
+    $post = $this->params['url'];
+    // Validate more
+    if ($this->Session->check('User.id') &&
+      $this->_validate_fields($post, $fields)) {
+      $coreData = $this->_extract_fields($post, $fields);
+      $coreData['user_id'] = $this->Session->read('User.id');
+      $coreData['search_index'] = strtolower(implode(" ", $coreData));
+      $res = $this->Event->save(array('Event' => $coreData));
+      $this->set('json', ($res ? $this->Event->id : false));
+    } else {
+      $this->set('json', false);
+    }
   }
 
   function update() {

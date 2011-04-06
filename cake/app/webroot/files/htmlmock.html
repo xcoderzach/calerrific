@@ -13,7 +13,9 @@
     <script type = "text/javascript" charset = "utf-8" src = "/js/edit_user.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/login.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/event.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "/js/users.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/tagger.js"></script>
+    <script type = "text/javascript" charset = "utf-8" src = "http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
@@ -110,14 +112,24 @@
               <span class = "name"></span>,&nbsp;
             </span>
           </span> 
+          Owner:
+          <span class = "ownername"></span> 
           <button class = "edit-event-button">edit</button>
           <button class = "cancel-event-button">cancel</button>
           <button class = "attend-event-button">Attend Event</button>
         </div> 
       </div>
     </div>
+    <div id = "calendar-user">
+      <div class = "title"></div>
+      <div class = "name"></div>
+      <div class = "department"></div>
+      <div class = "username"></div>
+      <div class = "position"></div>
+      <div class = "email"></div>
+    </div>
     <div id = "user-edit" style = "">
-      <form id="user-edit-form" method="post" autocomplete = "off">
+      <form id="user-edit-form" method="post">
         Name: <input type="text" name="name" id="name" />
         Position: <input type="text" name="position" id="position" />
         Email: <input type="text" name="email" id="email" />
@@ -131,13 +143,13 @@
     </div>
     <div id = "event-create">
       <form id = "create-form" method = "post" autocomplete = "off">
-        Name: <input type="text" name="name" id="event-name" />
-        Description: <input type="text" name="description" id="event-description" />
-        Start Date: <input type="text" name="start_date" id="event-start-date" />
-        Start Time: <input type="text" name="start_time" id="event-start-time" />
-        End Date: <input type="text" name="end_date" id="event-end-date" />
-        End Time: <input type="text" name="end_time" id="event-end-time" />
-        Location: <input type="text" name="location" id="event-location" />
+        Name: <input type="text" name="name" class = "required" id="event-name" />
+        Description: <input type="text" name="description" class = "required" id="event-description" />
+        Start Date: <input type="text" name="start_date" class = "required date" id="event-start-date" />
+        Start Time: <input type="text" name="start_time"  class = "required date" id="event-start-time" />
+        End Date: <input type="text" name="end_date" class = "required date" id="event-end-date" />
+        End Time: <input type="text" name="end_time" class = "required date" id="event-end-time" />
+        Location: <input type="text" name="location" class = "required" id="event-location" />
         Tags: <input type="text" name="tags" id="event-tags" />
         <input type="submit" id="submit" value="Go" />
         <input type="hidden" id="id" name="id" />
@@ -145,8 +157,8 @@
     </div> 
     <div id = "login" style = "display:none;">
        <form action="/users/login" method="get" accept-charset="utf-8">
-         <p>Username: <input type="text" id = "username"></p>
-         <p>Password: <input type="password" id = "pw"></p>
+         <p>Username: <input type="text" name = "username" id = "username"></p>
+         <p>Password: <input type="password" name = "password" id = "pw"></p>
          <p><input type="submit" id = "loginButton" value="Login &rarr;"></p>
        </form>
     </div>
