@@ -158,7 +158,6 @@ class EventsController extends AppController {
 					'location');
 	$post = $this->params['url'];
 	// Validate more
-  $this->Session->write("User.id", 1);
 	if ($this->Session->check('User.id') &&
 		$this->_validate_fields($post, $fields)) {
 	  $coreData = $this->_extract_fields($post, $fields);
@@ -169,7 +168,6 @@ class EventsController extends AppController {
 	} else {
 	  $this->set('json', false);
 	}
-  $this->Session->destroy();
   }
 
   function update() {

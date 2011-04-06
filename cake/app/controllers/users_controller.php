@@ -59,8 +59,7 @@ class UsersController extends AppController {
 		$coreData['id'] = $id;
 		$old['User'] = $this->_merge_maps($old['User'], $coreData);
 		if ($id == $this->Session->read('User.id')) {
-		  $this->User->set($old);
-		  $res = $this->User->save();
+		  $res = $this->User->save($old);
 		  $this->set('json', ($res ? true : false));
 		} else {
 		  $this->set('json', false);
