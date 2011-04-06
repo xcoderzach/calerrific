@@ -222,30 +222,6 @@ class EventsController extends AppController {
 	return $res;
   }
 
-  function addTag() {
-	$this->view = 'Json';
-
-	if ($this->Session->check('User.id')) {
-	  $id = $this->params['url']['id'];
-	  $tag_id = $this->params['url']['tag_id'];
-
-	  $old = $this->Event->findById($id);
-	  $newTags = $this->_extract_ids($old['Tag']);
-	  $newTags[] = $tag_id;
-	  $newTags = $this->_merge($newTags);
-	  $old['Tag'] = array('Tag' => $newTags);
-	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
-		$res = $this->Event->save($old);
-    $this->_makeSearchable();
-		$this->set('json', $res ? true : false);
-	  } else {
-		$this->set('json', false);
-	  }
-	} else {
-	  $this->set('json', false);
-	}
-  }
-
   function clearTags($id) {
 	$this->view = 'Json';
 
