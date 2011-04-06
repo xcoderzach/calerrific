@@ -12,12 +12,12 @@ $(function() {
       } else {
         console.log(data.username)
         $("#logged-in-as").show().html(data.username) 
-        $("#log-out").show()
+        $("#logout").show()
         display()
       }
     })
   })
-  $("#log-out").click(function() {
+  $("#logout").click(function() {
     $.get("/users/logout")
     $("#logged-in-as").hide().html("") 
     $("#log-out").hide()
