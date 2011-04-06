@@ -2,13 +2,16 @@
 class UsersController extends AppController {
 
   var $name = 'Users';
+  var $components = array('Session', 'Auth');
+
+  function beforeFilter() {
+	$this->Auth->allow('*');
+  }
 
 	function index() {
 	  $this->view = "Json";
 
-	  $conditions = array('id' => $this->params['url']['id']);
-	  $params = array('conditions' => $conditions);
-	  $raw = $this->User->find('first', $params);
+	  $raw = $this->User->findById($this->params['url']['id']);
 	  $raw = $raw['User'];
 
 	  $fields = array('name', 'username', 'position', 'email', 'title',
@@ -44,15 +47,14 @@ class UsersController extends AppController {
 
 	  $fields = array('name', 'username', 'position', 'email',
 					  'title', 'deparment');
-	  $post = $this->params['form'];
+	  $post = $this->params['url'];
 	  // Validate more
-	  if ($this->Session->check('User.id') &&
-		  $this->_validate_fields($post, $fields)) {
+	  if ($this->Session->check('User.id')) {
 		$id = $post['id'];
 		$coreData = $this->_extract_fields($post, $fields);
 		$old = $this->User->findById($id);
 		$coreData['id'] = $id;
-		$old['User'] = $coreData;
+		$old['User'] = $this->_merge_maps($old['User'], $coreData);
 		if ($id == $this->Session->read('User.id')) {
 		  $this->User->set($old);
 		  $res = $this->User->save();
@@ -65,6 +67,13 @@ class UsersController extends AppController {
 	  }
 	}
 
+	function _merge_maps($base, $new) {
+	  foreach ($new as $key => $val) {
+		$base[$key] = $val;
+	  }
+	  return $base;
+	}
+
 	function _validate_fields($obj, $fields) {
 	  foreach($fields as $field) {
 		if (!isset($obj[$field]) || $obj[$field] === '') {
@@ -72,6 +81,41 @@ class UsersController extends AppController {
 		}
 	  }
 	  return true;
+	}
+
+	function login() {
+	  $this->view = 'Json';
+	  // NEVER EVER DO THIS
+	  
+	  $post = $this->params['url'];
+	  $user = $post['username'];
+
+	  $pw = $this->Auth->password($post['pw']);
+	  $record = $this->User->findByUsername($user);
+	  
+	  if($record['User']['pw'] == $pw) {
+		$this->Session->write('User.id', $record['User']['id']);
+		$this->set('json', true);
+	  } else {
+		$this->set('json', false);
+	  }
+	}
+
+	function logout() {
+	  $this->view = 'Json';
+
+	  $this->Session->destroy();
+	  $this->set('json', true);
+	}
+
+	function id() {
+	  $this->view = 'Json';
+	  
+	  if ($this->Session->check('User.id')) {
+		$this->set('json', $this->Session->read('User.id'));
+	  } else {
+		$this->set('json', false);
+	  }
 	}
   }
 ?>

@@ -173,16 +173,15 @@ class EventsController extends AppController {
 
 	$fields = array('name', 'description', 'start_time', 'end_time',
 					'location');
-	$post = $this->params['form'];
+	$post = $this->params['url'];
 	// Validate more
-	if ($this->Session->check('User.id') &&
-		$this->_validate_fields($post, $fields)) {
+	if ($this->Session->check('User.id')) {
 	  $id = $post['id'];
 	  $coreData = $this->_extract_fields($post, $fields);
 	  $old = $this->Event->findById($id);
 	  $coreData['user_id'] = $old['Event']['user_id'];
 	  $coreData['id'] = $id;
-	  $old['Event'] = $coreData;
+	  $old['Event'] = $this->_merge_maps($old['Event'], $coreData);
 	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
 		$this->Event->set($old);
 		$res = $this->Event->save();
@@ -192,6 +191,13 @@ class EventsController extends AppController {
 	  }
 	}
   }
+
+  function _merge_maps($base, $new) {
+	  foreach ($new as $key => $val) {
+		$base[$key] = $val;
+	  }
+	  return $base;
+	}
 
   function _validate_fields($obj, $fields) {
 	foreach($fields as $field) {
@@ -205,7 +211,9 @@ class EventsController extends AppController {
   function _extract_fields($obj, $fields) {
 	$res = array();
 	foreach($fields as $field) {
-	  $res[$field] = $obj[$field];
+	  if (isset($obj[$field]) && $obj[$field] != '') {
+		$res[$field] = $obj[$field];
+	  }
 	}
 	return $res;
   }
@@ -214,8 +222,8 @@ class EventsController extends AppController {
 	$this->view = 'Json';
 
 	if ($this->Session->check('User.id')) {
-	  $id = $this->params['form']['id'];
-	  $tag_id = $this->params['form']['tag_id'];
+	  $id = $this->params['url']['id'];
+	  $tag_id = $this->params['url']['tag_id'];
 
 	  $old = $this->Event->findById($id);
 	  $newTags = $this->_extract_ids($old['Tag']);
