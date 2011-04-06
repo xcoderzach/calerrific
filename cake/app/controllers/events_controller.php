@@ -188,10 +188,11 @@ class EventsController extends AppController {
 		$this->Event->set($old);
 		$res = $this->Event->save();
 		$this->set('json', ($res ? true : false));
-    $this->_makeSearchable();
+		$this->_makeSearchable();
 		return;
 	  }
 	}
+	$this->set('json', false);
   }
 
   function _merge_maps($base, $new) {
