@@ -33,6 +33,7 @@ $(function() {
       $.get("/tags/add",{id: id, tags: $("#event-tags").val()})
       switchToMonth(currentYear, currentMonth)
       switchToWeek(currentYear, currentWeek)
+      $("#event-create").dialog("close") 
     })
   }
 

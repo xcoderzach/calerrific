@@ -44,6 +44,7 @@ function doUpdate() {
     success: display,
     error: display
   });
+  $("#event-create").dialog("close") 
 }
 
 $(function () {
