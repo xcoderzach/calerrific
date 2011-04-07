@@ -23,10 +23,15 @@ class EventsController extends AppController {
     $raw = $this->Event->find('all', array('recursive' => 1));
     foreach($raw as $item) {
       $id = $item["Event"]["id"];
+      unset($item["Event"]["search_index"]);
+      $eventStart = DateTime::createFromFormat("Y-m-d H:i:s", $item["Event"]["start_time"])->format("l F");
+      $eventEnd = DateTime::createFromFormat("Y-m-d H:i:s", $item["Event"]["end_time"])->format("l F");
       $index = implode(" ", $item["Event"]).
                implode(" ", $item["Tag"]).
                implode(" ", $item["Owner"]).
-               implode(" ", $item["User"]);
+               implode(" ", $item["User"]).
+               $eventEnd.
+               $eventStart;
       $this->Event->id = $id;
       $this->Event->save(array('search_index' => $index));
     }
@@ -34,6 +39,7 @@ class EventsController extends AppController {
 
   function search() {
     $this->view = "Json";
+    $this->_makeSearchable();
     $query = $this->params['url']['q'];
     if(trim($query) == '') {
       $query = "sdfsdfsdflfdfsdfdsfsdkfjhksdfouurwyeqouriyweoyrwqiryweqioryh";
@@ -188,7 +194,6 @@ class EventsController extends AppController {
 		$this->Event->set($old);
 		$res = $this->Event->save();
 		$this->set('json', ($res ? true : false));
-		$this->_makeSearchable();
 		return;
 	  }
 	}
@@ -230,7 +235,6 @@ class EventsController extends AppController {
 	  $old['Tag'] = array('Tag' => array());
 	  if ($old['Event']['user_id'] == $this->Session->read('User.id')) {
 		$res = $this->Event->save($old);
-    $this->_makeSearchable();
 		$this->set('json', $res ? true : false);
 	  } else {
 		$this->set('json', false);
@@ -271,7 +275,6 @@ class EventsController extends AppController {
 	  $new = array('Event' => array('id' => $id));
 	  $new['User'] = array('User' => $userIds);
 	  $res = $this->Event->save($new);
-	  $this->_makeSearchable();
 	  $this->set('json', $res ? true : false);
 	} else {
 	  $this->set('json', false);
