@@ -20,11 +20,11 @@ $(function() {
   }
 
   $("#login").dialog({
-    autoOpen: false,
-    height: 260,
-    width: 300,
-    modal: true,
-    buttons: { "login": doLogin
+    autoOpen: false
+  , height: 260
+  , width: 300
+  , modal: true
+  , buttons: { "login": doLogin
              , "Cancel": function() { 
                  $("#login").dialog("close") 
                }

@@ -21,5 +21,9 @@ var $validate = array(
 	);
 	var $useDbConfig = 'groupWdb';
 	var $hasAndBelongsToMany = array('Tag', 'User');
+  var $belongsTo = array('Owner' => array(
+    'className' => 'User',
+    'foreignKey' => 'user_id'
+  )); 
 }
 ?>

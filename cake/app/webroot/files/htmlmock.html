@@ -19,12 +19,10 @@
       $(".ui-state-default").live("mouseover", function() {
         $(this).addClass("ui-state-hover")
       })
-
       $(".ui-state-default").live("mouseout", function() {
         $(this).removeClass("ui-state-hover")
       })
     </script>
-
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
     <link type="text/css" href="/css/custom-theme/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
@@ -103,28 +101,29 @@
         </li>
       </ul>
     </div>
-    <div id = "calendar-event" style = "display:none;">
+    <div id = "calendar-event" class = "ui-widget-content ui-corner-all">
+      <h1 class = "ui-widget-header ui-corner-top">Events List</h1>
       <div class = "error" style = "display:none;">Nothing found!</div>
       <div class = "events">
         <div class = "event">
           <div> 
             <span class = "name"></span> - <span class = "start-time"></span>
           </div>
-          Location:
+          <div>Location:</div>
           <span class = "location"></span>
-          Tags:
+          <div>Tags:</div>
           <span class = "tags">
             <span>
               <span class = "name"></span>,&nbsp;
             </span>
           </span>
-          Attendees:
+          <div>Attendees:</div>
           <span class = "attendees">
             <span>
               <span class = "name"></span>,&nbsp;
             </span>
           </span> 
-          Owner:
+          <div>Owner:</div>
           <span class = "ownername"></span> 
           <button class = "edit-event-button">edit</button>
           <button class = "cancel-event-button">cancel</button>
