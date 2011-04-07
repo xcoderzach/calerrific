@@ -16,6 +16,15 @@
     <script type = "text/javascript" charset = "utf-8" src = "/js/users.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/tagger.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+    <script>
+      $(".ui-state-default").live("mouseover", function() {
+        $(this).addClass("ui-state-hover")
+      })
+
+      $(".ui-state-default").live("mouseout", function() {
+        $(this).removeClass("ui-state-hover")
+      })
+    </script>
 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
     <link href='/css/style.css' rel='stylesheet' type='text/css'>
@@ -25,27 +34,27 @@
     <div id = "nav" class = "ui-widget-header">
       <div id = "view-switcher">
         <div id = "month-view" class = "ui-state-default ui-corner-left">month</div>
-        <div id = "week-view" class = "ui-state-default ui-corner-right">week</div>
+        <div id = "week-view" class = "ui-state-default">week</div>
         <div id = "event-view" class = "ui-state-default ui-corner-right">event</div>
       </div>
       <div id = "month-controls" style = "display:none;">
-        <span id = "previous-month" class = "ui-state-default">Previous month</span>
-        <span id = "current-date">
+        <span id = "previous-month" class = " button ui-state-default ui-corner-all">Previous month</span>
+        <span class = "current-date">
           <span class = "current-month"></span>
           <span class = "current-year"></span>
         </span>
-        <span id = "next-month" class = "ui-state-default ui-corner-all">Next month</span>
+        <span id = "next-month" class = "button ui-state-default ui-corner-all">Next month</span>
       </div>
       <div id = "week-controls">
-        <span id = "previous-week" class = "ui-state-default">Previous week</span>
-        <span id = "current-date">
+        <span id = "previous-week" class = "button ui-state-default ui-corner-all">Previous week</span>
+        <span class = "current-date">
           <span class = "start-of-week"></span> - 
           <span class = "end-of-week"></span>
         </span> 
-        <span id = "next-week" class = "ui-state-default ui-corner-all">Next week</span>
+        <span id = "next-week" class = "button ui-state-default ui-corner-all">Next week</span>
       </div>
       <span id = "logged-in-as" class = "ui-state-default ui-corner-all" style = "display:none;"></span>
-      <span id = "logout" class = "ui-state-default ui-corner-all" style = "display:none;">logout</span>
+      <span id = "logout" class = "button ui-state-default ui-corner-all" style = "display:none;">logout</span>
       <input type = "text" id = "search-box" style = "float: right;" />
     </div>
     <div id = "calendar-month" style = "display:none;">
@@ -59,8 +68,8 @@
         <li class = "span-week">Saturday</li>
       </ul>
       <ul class = "days">
-        <li class = "day span-week ui-widget-content">
-          <div class = "date"></div>
+        <li class = "day span-week ui-widget-content ui-corner-all">
+          <div class = "date ui-widget-header ui-corner-top"></div>
           <div class = "events">
             <div class = "event">
               <div><span class = "name"></span> - <span class = "start-time"></span></div>

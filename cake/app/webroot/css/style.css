@@ -9,7 +9,7 @@ body {
   font-family:'Droid Sans', sans-serif;
   font-weight:bold;
   height:100%;
-  margin-top:40px;
+  margin-top:60px;
 }
 
 #calendar {
@@ -21,7 +21,7 @@ body {
 
 #week-header {
   height:18px;
-  top:22px;
+  top:40px;
   position:absolute;
   width:100%;
   min-width:960px;
@@ -31,9 +31,14 @@ body {
 #nav {
 	position:absolute;
 	text-align:center;
-	height:18px;
+	height:30px;
+  padding-top:10px;
 	top:0px;
 	width:100%;
+}
+
+#view-switcher {
+  height:40px;
 }
 
 #previous-month {
@@ -80,6 +85,26 @@ body {
   border-right:1px solid black; 
 }
 
-#view-switcher, #week-view, #month-view, #event-view {
+#month-controls, #week-controls {
+  width:600px;
+  margin:0 auto;
+}
+
+.current-date {
   float:left;
+}
+
+.days .date {
+  padding-left: 5px;
+}
+
+.events {
+  padding-left:5px;
+}
+
+#view-switcher, #week-view, #month-view, #event-view, .button {
+  float:left;
+  margin-top:-5px;
+  padding:5px;
+  cursor:pointer;
 }
