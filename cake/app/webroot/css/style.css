@@ -38,6 +38,11 @@ body {
 	width:99.9%;
 }
 
+.event-controls button {
+  padding:5px;
+  margin-bottom:10px;
+}
+
 #view-switcher {
   height:40px;
 }

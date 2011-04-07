@@ -57,10 +57,8 @@ function generateRangeData(range, padding, callback) {
           userRegistry[evt.attendees[i].id] = evt.attendees[i]
           evt.attendees[i].name = {content: evt.attendees[i].name, "data-user": evt.attendees[i].id}
         }
-        if(evt.owner) {
-          userRegistry[evt.owner.id] = evt.owner
-          evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
-        }
+        userRegistry[evt.owner.id] = evt.owner
+        evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
         evt["start-time"] = (new Date(parseInt(evt.start_timestamp))).getHours() + ":" + (new Date(parseInt(evt.start_timestamp))).getMinutes().zeroPad(2)
         eventRegistry[evt.id] = evt
       })
@@ -254,9 +252,7 @@ $(function() {
       for(i in events) {
         evt = events[i]
         evt["event"] = {"data-event": evt.id}
-        if(evt.owner) {
-          evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
-        }
+        evt["ownername"] = {content: evt.owner.name, "data-user": evt.owner.id}
         for(var i in evt.attendees) {
           evt.attendees[i].name = {content: evt.attendees[i].name, "data-user": evt.owner.id}
         }
