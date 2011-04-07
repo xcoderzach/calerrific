@@ -15,33 +15,47 @@
 				}})
 	}
 
-$(function () {
-  $("#submit").click(function () {
-    var pw = $("#password").val()
-    var cpw = $("#confirm_password").val()
-    if(pw !== cpw) {
-      alert("Passwords do not match")
-      $("#password").val("")
-      $("#confirm_password").val("")
-      return
-    }
-    var data = {
-      name: $("#name").attr('value'),
-      position: $("#position").attr('value'),
-      email: $("#email").attr('value'),
-      title: $("#title").attr('value'),
-      department: $("#department").attr('value'),
-      pw: $("#password").attr('value'),
-      id: $("#id").attr('value')
-    };
+function doUpdate() {
+  var pw = $("#password").val()
+  var cpw = $("#confirm_password").val()
 
+  if(pw !== cpw) {
+    alert("Passwords do not match")
     $("#password").val("")
     $("#confirm_password").val("")
-    
-    $.ajax({url: '/users/update',
-      data: data,
-      success: display,
-      error: display
-    });
+    return
+  }
+
+  var data = {
+    name: $("#name").attr('value'),
+    position: $("#position").attr('value'),
+    email: $("#email").attr('value'),
+    title: $("#title").attr('value'),
+    department: $("#department").attr('value'),
+    pw: $("#password").attr('value'),
+    id: $("#id").attr('value')
+  };
+
+  $("#password").val("")
+  $("#confirm_password").val("")
+  
+  $.ajax({url: '/users/update',
+    data: data,
+    success: display,
+    error: display
   });
+}
+
+$(function () {
+  $("#user-edit").dialog({
+    autoOpen: false,
+    height: 700,
+    width: 400,
+    modal: true,
+    buttons: {"Save profile": doUpdate,
+              "Cancel": function() { $("#user-edit").dialog("close") }}
+  })
+  $("#edit-user-info").click(function() {
+    $("#user-edit").dialog("open")
+  })
 });
