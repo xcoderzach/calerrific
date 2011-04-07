@@ -138,37 +138,40 @@
       <div class = "email"></div>
     </div>
     <div id = "user-edit" style = "">
-      <form id="user-edit-form" method="post">
-        Name: <input type="text" name="name" id="name" />
-        Position: <input type="text" name="position" id="position" />
-        Email: <input type="text" name="email" id="email" />
-        Title: <input type="text" name="title" id="title" />
-        Department: <input type="text" name="department" id="department" />
-        Password: <input type="password" name="password" id="password" />
-        Confirm Password: <input type="password" name="confirm_password" id="confirm_password" />
-        <input type="button" id="submit" value="Change" />
+      <form id="user-edit-form" title="Edit user" method="post">
+		<fieldset>
+        <label for="name">Name</label> <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/>
+        <label for="position">Position</label> <input type="text" name="position" id="position" class="text ui-widget-content ui-corner-all"/>
+        <label for="email">Email</label> <input type="text" name="email" id="email" class="text ui-widget-content ui-corner-all" />
+        <label for="title">Title</label> <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
+        <label for="department">Department</label> <input type="text" name="department" id="department" class="text ui-widget-content ui-corner-all" />
+        <label for="password">Password</label> <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" />
+        <label for="confirm_password">Confirm Password</label> <input type="password" name="confirm_password" id="confirm_password" class="text ui-widget-content ui-corner-all" />
         <input type="hidden" id="event-id" name="id" />
+		</fieldset>
       </form> 
     </div>
-    <div id = "event-create">
+    <div id = "event-create" title="Create new event">
       <form id = "create-form" method = "post" autocomplete = "off">
-        Name: <input type="text" name="name" class = "required" id="event-name" />
-        Description: <input type="text" name="description" class = "required" id="event-description" />
-        Start Date: <input type="text" name="start_date" class = "required date" id="event-start-date" />
-        Start Time: <input type="text" name="start_time"  class = "required date" id="event-start-time" />
-        End Date: <input type="text" name="end_date" class = "required date" id="event-end-date" />
-        End Time: <input type="text" name="end_time" class = "required date" id="event-end-time" />
-        Location: <input type="text" name="location" class = "required" id="event-location" />
-        Tags: <input type="text" name="tags" id="event-tags" />
-        <input type="submit" id="submit" value="Go" />
+		<fieldset>
+        <label for="name">Name</label> <input type="text" name="name" id="event-name" class="text ui-widget-content ui-corner-all" />
+        <label for="description">Description</label> <input type="text" name="description" id="event-description" class="text ui-widget-content ui-corner-all" />
+        <label for="start_date">Start Date</label> <input type="text" name="start_date" id="event-start-date" class="text ui-widget-content ui-corner-all" />
+        <label for="start_time">Start Time</label> <input type="text" name="start_time" id="event-start-time" class="text ui-widget-content ui-corner-all" />
+        <label for="end_date">End Date</label> <input type="text" name="end_date" id="event-end-date" class="text ui-widget-content ui-corner-all" />
+        <label for="end_time">End Time</label> <input type="text" name="end_time" id="event-end-time" class="text ui-widget-content ui-corner-all" />
+        <label for="location">Location</label> <input type="text" name="location" id="event-location" class="text ui-widget-content ui-corner-all" />
+        <label for="tags">Tags</label> <input type="text" name="tags" id="event-tags" class="text ui-widget-content ui-corner-all" />
         <input type="hidden" id="id" name="id" />
-      </form> 
+		</fieldset>      
+		</form> 
     </div> 
-    <div id = "login" style = "display:none;">
+    <div id = "login" title="Log In">
        <form action="/users/login" method="get" accept-charset="utf-8">
-         <p>Username: <input type="text" name = "username" id = "username"></p>
-         <p>Password: <input type="password" name = "password" id = "pw"></p>
-         <p><input type="submit" id = "loginButton" value="Login &rarr;"></p>
+		<fieldset>
+         <label for="username">Username</label> <input type="text" name = "username" id = "username" class="text ui-widget-content ui-corner-all" />
+         <label for="password">Password</label> <input type="password" name = "password" id = "pw" class="text ui-widget-content ui-corner-all" />
+		</fieldset>
        </form>
     </div>
   </body>
