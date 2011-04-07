@@ -26,14 +26,15 @@ class EventsController extends AppController {
       unset($item["Event"]["search_index"]);
       $eventStart = DateTime::createFromFormat("Y-m-d H:i:s", $item["Event"]["start_time"])->format("l F");
       $eventEnd = DateTime::createFromFormat("Y-m-d H:i:s", $item["Event"]["end_time"])->format("l F");
-      $index = implode(" ", $item["Event"]).
-               implode(" ", $item["Tag"]).
-               implode(" ", $item["Owner"]).
-               implode(" ", $item["User"]).
-               $eventEnd.
-               $eventStart;
+      $index = implode(" ", $item["Event"]).implode(" ", $item["Owner"]).$eventEnd.$eventStart;
+      foreach($item["Tag"] as $tag) {
+        $index .= implode(" ", $tag);
+      }
+      foreach($item["User"] as $user) {
+        $index .= implode(" ", $user);
+      }
       $this->Event->id = $id;
-      $this->Event->save(array('search_index' => $index));
+      $this->Event->save(array('search_index' => strtolower($index)));
     }
   }
 
@@ -44,7 +45,7 @@ class EventsController extends AppController {
     if(trim($query) == '') {
       $query = "sdfsdfsdflfdfsdfdsfsdkfjhksdfouurwyeqouriyweoyrwqiryweqioryh";
     }
-    $query = '%' . preg_replace('/\s+/', '%', $query) . '%';
+    $query = '%' . strtolower(preg_replace('/\s+/', '%', $query)) . '%';
 	  $conditions['search_index LIKE'] = $query;
     $raw = $this->Event->find('all', array('conditions' => $conditions, 'recursive' => 1));
     $rows = $this->_extract_rows($raw);

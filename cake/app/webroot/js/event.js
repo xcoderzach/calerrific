@@ -1,4 +1,5 @@
 $(function() {
+ 
   $("#event-start-date").datepicker()
   $("#event-end-date").datepicker()
   $("#event-start-date").datepicker("option", {dateFormat: "yy-mm-dd"})
@@ -7,8 +8,9 @@ $(function() {
   $("#event-start-time").timepicker()
   $("#event-end-time").timepicker()
  
+  var errors = new LiveView($("#event-create .errors"), {errors: []})
+
   function doSave() {
-    e.preventDefault()
     var data = {
       start_time: $("#event-start-date").val() + " " + $("#event-start-time").val() + ":00"
     , end_time: $("#event-end-date").val() + " " + $("#event-end-time").val() + ":00"
@@ -21,6 +23,9 @@ $(function() {
     } else {
       var url = "/events/create"
     }
+    var value
+    var key
+    var errored = false
 
     $.get(url, data)
     .success(function(ret) {
@@ -36,7 +41,7 @@ $(function() {
     height: 593,
     width: 400,
     modal: true,
-    buttons: { "Save event": doUpdate
+    buttons: { "Save event": doSave
              , "Cancel": function() { 
                  $("#event-create").dialog("close") 
                }

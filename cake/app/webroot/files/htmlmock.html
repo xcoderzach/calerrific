@@ -24,13 +24,13 @@
         $(this).removeClass("ui-state-hover")
       })
       function resetHeight() {
-        var viewport = Math.max($(window).height() - 66, 420)
+        var viewport = Math.max($(window).height() - 90, 420)
         $(".days").css({height: viewport})
       }
       $(function() {
         resetHeight()
         $(window).bind("resize", resetHeight)
-        $('#switcher').themeswitcher();
+        $('#switcher').themeswitcher({loadTheme: "Vader"});
         $("#ui-datepicker-div").hide();
       })
     </script>
@@ -38,7 +38,7 @@
     <link href='/css/style.css' rel='stylesheet' type='text/css' />
     <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
   </head>
-  <body class = "logged-out">
+  <body class = "logged-out ui-widget-content">
     <div id="switcher"></div>
     <div id = "nav" class = "ui-widget-header">
       <div id = "view-switcher">
@@ -174,12 +174,6 @@
     <div id = "event-create" title="Create new event">
       <form id = "create-form" method = "post" action="">
         <fieldset>
-          <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all errors" style = "display: none;"> 
-            <p>
-              <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-              <strong>Error:</strong> <span class = "message">shit borked</span>
-            </p>
-          </div>
           <label>Name</label> <input type="text" name="name" id="event-name" class="text ui-widget-content ui-corner-all" />
           <label>Description</label> <input type="text" name="description" id="event-description" class="text ui-widget-content ui-corner-all" />
           <label>Start Date</label> <input type="text" name="start_date" id="event-start-date" class="text ui-widget-content ui-corner-all" />
