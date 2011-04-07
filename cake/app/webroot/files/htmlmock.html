@@ -1,7 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  
+  <head xmlns="http://www.w3.org/1999/xhtml">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Htmlmock</title>
 
 		<script type = "text/javascript" src = "/js/jquery-1.5.1.min.js"></script>
@@ -15,16 +16,24 @@
     <script type = "text/javascript" charset = "utf-8" src = "/js/event.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/users.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/tagger.js"></script>
-    <script>
+    <script type="text/javascript">
       $(".ui-state-default").live("mouseover", function() {
         $(this).addClass("ui-state-hover")
       })
       $(".ui-state-default").live("mouseout", function() {
         $(this).removeClass("ui-state-hover")
       })
+      function resetHeight() {
+          var viewport = Math.max($(window).height() - 65, 420)
+          $(".days").css({height: viewport})
+      }
+      $(function() {
+        resetHeight()
+        $(window).bind("resize", resetHeight)
+      })
     </script>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
-    <link href='/css/style.css' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css' />
+    <link href='/css/style.css' rel='stylesheet' type='text/css' />
     <link type="text/css" href="/css/custom-theme/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
   </head>
@@ -59,7 +68,7 @@
       <input type = "text" id = "search-box" style = "float: right;" />
     </div>
     <div id = "calendar-month" style = "display:none;">
-      <ul id = "week-header">
+      <ul class = "week-header">
         <li class = "span-week">Sunday</li>
         <li class = "span-week">Monday</li>
         <li class = "span-week">Tuesday</li>
@@ -73,13 +82,17 @@
           <div class = "date ui-widget-header ui-corner-top"></div>
           <div class = "events">
             <div class = "event">
-              <div><span class = "name"></span> - <span class = "start-time"></span></div>
+              <div>
+                <span class = "name"></span> - <span class = "start-time"></span>
+              </div>
+            </div>
           </div>
         </li>
       </ul>
     </div>  
+    
     <div id = "calendar-week">
-      <ul id = "week-header">
+      <ul class = "week-header">
         <li class = "span-week">Sunday</li>
         <li class = "span-week">Monday</li>
         <li class = "span-week">Tuesday</li>
@@ -87,7 +100,7 @@
         <li class = "span-week">Thursday</li>
         <li class = "span-week">Friday</li>
         <li class = "span-week">Saturday</li>
-      </ul>
+      </ul> 
       <ul class = "days">
         <li class = "day span-week ui-widget-content">
           <div class = "date"></div>

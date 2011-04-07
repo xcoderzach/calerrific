@@ -10,7 +10,7 @@ body {
   font-family:'Droid Sans', sans-serif;
   font-weight:bold;
   height:100%;
-  margin-top:60px;
+  margin-top:46px;
 }
 
 #calendar {
@@ -99,7 +99,6 @@ body {
 .current-date {
   float:left;
 }
-
 .days .date {
   padding-left: 5px;
 }
