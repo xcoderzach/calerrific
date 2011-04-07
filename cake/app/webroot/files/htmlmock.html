@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Htmlmock</title>
-
+    <title>Calerrific</title>
 		<script type = "text/javascript" src = "/js/jquery-1.5.1.min.js"></script>
 		<script type = "text/javascript" src = "/js/jquery-ui-1.8.11.custom.min.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/jquery.ui.timepicker.js"></script>
@@ -16,6 +15,7 @@
     <script type = "text/javascript" charset = "utf-8" src = "/js/event.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/users.js"></script>
     <script type = "text/javascript" charset = "utf-8" src = "/js/tagger.js"></script>
+    <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
     <script type="text/javascript">
       $(".ui-state-default").live("mouseover", function() {
         $(this).addClass("ui-state-hover")
@@ -30,14 +30,16 @@
       $(function() {
         resetHeight()
         $(window).bind("resize", resetHeight)
+        $('#switcher').themeswitcher();
+        $("#ui-datepicker-div").hide();
       })
     </script>
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css' />
     <link href='/css/style.css' rel='stylesheet' type='text/css' />
-    <link type="text/css" href="/css/custom-theme/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
-    <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/base/jquery-ui.css" />
   </head>
   <body class = "logged-out">
+    <div id="switcher"></div>
     <div id = "nav" class = "ui-widget-header">
       <div id = "view-switcher">
         <div id = "month-view" class = "ui-state-default ui-corner-left">month</div>
@@ -172,6 +174,12 @@
     <div id = "event-create" title="Create new event">
       <form id = "create-form" method = "post" action="">
         <fieldset>
+          <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all errors" style = "display: none;"> 
+            <p>
+              <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+              <strong>Error:</strong> <span class = "message">shit borked</span>
+            </p>
+          </div>
           <label>Name</label> <input type="text" name="name" id="event-name" class="text ui-widget-content ui-corner-all" />
           <label>Description</label> <input type="text" name="description" id="event-description" class="text ui-widget-content ui-corner-all" />
           <label>Start Date</label> <input type="text" name="start_date" id="event-start-date" class="text ui-widget-content ui-corner-all" />
@@ -187,6 +195,12 @@
     <div id = "login" title="Log In">
        <form action="/users/login" method="get" accept-charset="utf-8">
          <fieldset>
+           <div class="ui-state-error ui-corner-all errors" style = "padding: 0pt 0.7em; display: none;"> 
+             <p>
+               <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+               <strong>Error:</strong> <span class = "message">Wrong username or password</span>
+             </p>
+           </div> 
            <label>Username</label> 
            <input type="text" name = "username" id = "username" class="text ui-widget-content ui-corner-all" />
            <label>Password</label> 

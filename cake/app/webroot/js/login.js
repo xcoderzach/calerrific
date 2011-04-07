@@ -13,14 +13,15 @@ $(function() {
   getUserInfo()
 
   function doLogin() {
+    $("#login .errors").hide()
     var data = {
       username: $("#username").val()
     , pw: $("#pw").val() }
 
     $.get("/users/login", data)
     .success(function(dat) {
-      if(JSON.parse(dat) === false) {
-        alert("couldn't log in")
+      if(!JSON.parse(dat)) {
+        $("#login .errors").show()
       } else {
         $(document.body).addClass("logged-in")
         $(document.body).removeClass("logged-out")
