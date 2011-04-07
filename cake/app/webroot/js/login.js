@@ -1,6 +1,6 @@
 $(function() {
 
-  $("#login").submit(function(e) {
+  function doLogin() {
     e.preventDefault()
     var data = {
       username: $("#username").val()
@@ -17,10 +17,28 @@ $(function() {
         display()
       }
     })
+  }
+
+  $("#login").dialog({
+    autoOpen: false,
+    height: 260,
+    width: 300,
+    modal: true,
+    buttons: { "login": doLogin
+             , "Cancel": function() { 
+                 $("#login").dialog("close") 
+               }
+             }
+  })  
+
+  $("#login-button").click(function() {
+    $("#login").dialog("open") 
   })
-  $("#logout").click(function() {
+
+  $("#logout-button").click(function() {
     $.get("/users/logout")
     $("#logged-in-as").hide().html("") 
-    $("#log-out").hide()
+    $("#logout-button").hide()
+    $("#login-button").show()
   })
 })

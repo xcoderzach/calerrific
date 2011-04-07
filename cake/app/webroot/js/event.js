@@ -33,7 +33,7 @@ $(function() {
 
   $("#event-create").dialog({
     autoOpen: false,
-    height: 700,
+    height: 593,
     width: 400,
     modal: true,
     buttons: { "Save event": doUpdate
@@ -91,5 +91,4 @@ $(function() {
       showView("month")
     })
   }) 
-
 })

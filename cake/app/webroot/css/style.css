@@ -102,7 +102,7 @@ body {
   padding-left:5px;
 }
 
-#view-switcher, #week-view, #month-view, #event-view, .button {
+#view-switcher, #week-view, #month-view, #event-view, .button, #edit-user-info, #create-event-button, #login-button, #logout-button {
   float:left;
   margin-top:-5px;
   padding:5px;
