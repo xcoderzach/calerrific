@@ -7,7 +7,7 @@ $(function() {
   $("#event-start-time").timepicker()
   $("#event-end-time").timepicker()
  
-  $("#create-form").submit(function(e) {
+  function doSave() {
     e.preventDefault()
     var data = {
       start_time: $("#event-start-date").val() + " " + $("#event-start-time").val() + ":00"
@@ -29,13 +29,26 @@ $(function() {
       switchToMonth(currentYear, currentMonth)
       switchToWeek(currentYear, currentWeek)
     })
-  })
+  }
+
+  $("#event-create").dialog({
+    autoOpen: false,
+    height: 700,
+    width: 400,
+    modal: true,
+    buttons: { "Save event": doUpdate
+             , "Cancel": function() { 
+                 $("#event-create").dialog("close") 
+               }
+             }
+  }) 
 
   $(".edit-event-button").live("click", function() {
     var id = $(this).parent().attr("data-event")
       , evt = eventRegistry[id]
     start = evt.start_time.split(" ")
     end = evt.end_time.split(" ")
+
     $("#event-start-date").val(start[0])
     $("#event-start-time").val(start[1])
     $("#event-end-date").val(start[0])
@@ -44,6 +57,21 @@ $(function() {
     $("#event-description").val(evt.description)
     $("#event-location").val(evt.location) 
     $("#event-id").val(evt.id) 
+
+    $("#event-create").dialog("open") 
+  })
+
+  $("#create-event-button").live("click", function() {
+    $("#event-start-date").val("")
+    $("#event-start-time").val("")
+    $("#event-end-date").val("")
+    $("#event-end-time").val("")
+    $("#event-name").val("")
+    $("#event-description").val("")
+    $("#event-location").val("") 
+    $("#event-id").val("") 
+
+    $("#event-create").dialog("open")  
   })
 
   $(".cancel-event-button").live("click", function() {

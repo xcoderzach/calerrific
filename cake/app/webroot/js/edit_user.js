@@ -49,7 +49,7 @@ function doUpdate() {
 $(function () {
   $("#user-edit").dialog({
     autoOpen: false,
-    height: 700,
+    height: 510,
     width: 400,
     modal: true,
     buttons: {"Save profile": doUpdate,
