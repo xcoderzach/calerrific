@@ -114,6 +114,10 @@ body {
   cursor:pointer;
 }
 
+.logged-in .logged-out, .logged-out .logged-in {
+  display:none;
+}
+
 label, input { display:block; }
 		input.text { margin-bottom:12px; width:95%; padding: .4em; }
 		fieldset { padding:0; border:0; margin-top:25px; }

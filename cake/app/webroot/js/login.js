@@ -1,7 +1,18 @@
+var currentUser
 $(function() {
+  function getUserInfo() {
+    $.get("/users/id", function(data) {
+      currentUser = JSON.parse(data)
+      if(currentUser) {
+        $(document.body).addClass("user-" + currentUser)
+        $(document.body).addClass("logged-in")
+        $(document.body).removeClass("logged-out")
+      }
+    })
+  }
+  getUserInfo()
 
   function doLogin() {
-    e.preventDefault()
     var data = {
       username: $("#username").val()
     , pw: $("#pw").val() }
@@ -11,10 +22,14 @@ $(function() {
       if(JSON.parse(dat) === false) {
         alert("couldn't log in")
       } else {
-        console.log(data.username)
+        $(document.body).addClass("logged-in")
+        $(document.body).removeClass("logged-out")
+
+        getUserInfo()
         $("#logged-in-as").show().html(data.username) 
         $("#logout").show()
         display()
+        $("#login").dialog("close") 
       }
     })
   }
@@ -37,8 +52,10 @@ $(function() {
 
   $("#logout-button").click(function() {
     $.get("/users/logout")
-    $("#logged-in-as").hide().html("") 
-    $("#logout-button").hide()
-    $("#login-button").show()
+    $(document.body).addClass("logged-out")
+    $(document.body).removeClass("logged-in")
+    $(document.body).removeClass("user-" + currentUser)
+    currentUser = null
+    $("#login").dialog("close") 
   })
 })

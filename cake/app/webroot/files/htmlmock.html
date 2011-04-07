@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-  <head xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Htmlmock</title>
 
@@ -24,8 +24,8 @@
         $(this).removeClass("ui-state-hover")
       })
       function resetHeight() {
-          var viewport = Math.max($(window).height() - 65, 420)
-          $(".days").css({height: viewport})
+        var viewport = Math.max($(window).height() - 66, 420)
+        $(".days").css({height: viewport})
       }
       $(function() {
         resetHeight()
@@ -37,16 +37,16 @@
     <link type="text/css" href="/css/custom-theme/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
   </head>
-  <body>
+  <body class = "logged-out">
     <div id = "nav" class = "ui-widget-header">
       <div id = "view-switcher">
         <div id = "month-view" class = "ui-state-default ui-corner-left">month</div>
         <div id = "week-view" class = "ui-state-default">week</div>
         <div id = "event-view" class = "ui-state-default ui-corner-right">event</div>
-        <div id = "edit-user-info" class = "ui-state-default ui-corner-all">update profile</div>
-        <div id = "create-event-button" class = "ui-state-default ui-corner-all">create event</div>
-        <div id = "logout-button" class = "button ui-state-default ui-corner-all" style = "display:none;">logout</div>
-        <div id = "login-button" class = "button ui-state-default ui-corner-all">login</div>
+        <div id = "edit-user-info" class = "logged-in ui-state-default ui-corner-all">update profile</div>
+        <div id = "create-event-button" class = "logged-in ui-state-default ui-corner-all">create event</div>
+        <div id = "logout-button" class = "logged-in button ui-state-default ui-corner-all">logout</div>
+        <div id = "login-button" class = "logged-out button ui-state-default ui-corner-all">login</div>
       </div>
       <div id = "month-controls" style = "display:none;">
         <span id = "previous-month" class = " button ui-state-default ui-corner-all">Previous month</span>
@@ -64,7 +64,6 @@
         </span> 
         <span id = "next-week" class = "button ui-state-default ui-corner-all">Next week</span>
       </div>
-      <span id = "logged-in-as" class = "ui-state-default ui-corner-all" style = "display:none;"></span>
       <input type = "text" id = "search-box" style = "float: right;" />
     </div>
     <div id = "calendar-month" style = "display:none;">
@@ -110,6 +109,7 @@
                 <span class = "name"></span> - <span class = "start-time"></span>
               </div>
               <div class = "tags"></div>
+            </div>
           </div>
         </li>
       </ul>
@@ -155,31 +155,31 @@
       <div class = "position"></div>
       <div class = "email"></div>
     </div>
-    <div id = "user-edit" style = "">
-      <form id="user-edit-form" title="Edit user" method="post">
+    <div id = "user-edit">
+      <form id="user-edit-form" action="" title="Edit user" method="post">
         <fieldset>
-          <label for="name">Name</label> <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/>
-          <label for="position">Position</label> <input type="text" name="position" id="position" class="text ui-widget-content ui-corner-all"/>
-          <label for="email">Email</label> <input type="text" name="email" id="email" class="text ui-widget-content ui-corner-all" />
-          <label for="title">Title</label> <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
-          <label for="department">Department</label> <input type="text" name="department" id="department" class="text ui-widget-content ui-corner-all" />
-          <label for="password">Password</label> <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" />
-          <label for="confirm_password">Confirm Password</label> <input type="password" name="confirm_password" id="confirm_password" class="text ui-widget-content ui-corner-all" />
+          <label>Name</label> <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all"/>
+          <label>Position</label> <input type="text" name="position" id="position" class="text ui-widget-content ui-corner-all"/>
+          <label>Email</label> <input type="text" name="email" id="email" class="text ui-widget-content ui-corner-all" />
+          <label>Title</label> <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
+          <label>Department</label> <input type="text" name="department" id="department" class="text ui-widget-content ui-corner-all" />
+          <label>Password</label> <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all" />
+          <label>Confirm Password</label> <input type="password" name="confirm_password" id="confirm_password" class="text ui-widget-content ui-corner-all" />
           <input type="hidden" id="event-id" name="id" />
         </fieldset>
       </form> 
     </div>
     <div id = "event-create" title="Create new event">
-      <form id = "create-form" method = "post" autocomplete = "off">
+      <form id = "create-form" method = "post" action="">
         <fieldset>
-          <label for="name">Name</label> <input type="text" name="name" id="event-name" class="text ui-widget-content ui-corner-all" />
-          <label for="description">Description</label> <input type="text" name="description" id="event-description" class="text ui-widget-content ui-corner-all" />
-          <label for="start_date">Start Date</label> <input type="text" name="start_date" id="event-start-date" class="text ui-widget-content ui-corner-all" />
-          <label for="start_time">Start Time</label> <input type="text" name="start_time" id="event-start-time" class="text ui-widget-content ui-corner-all" />
-          <label for="end_date">End Date</label> <input type="text" name="end_date" id="event-end-date" class="text ui-widget-content ui-corner-all" />
-          <label for="end_time">End Time</label> <input type="text" name="end_time" id="event-end-time" class="text ui-widget-content ui-corner-all" />
-          <label for="location">Location</label> <input type="text" name="location" id="event-location" class="text ui-widget-content ui-corner-all" />
-          <label for="tags">Tags</label> <input type="text" name="tags" id="event-tags" class="text ui-widget-content ui-corner-all" />
+          <label>Name</label> <input type="text" name="name" id="event-name" class="text ui-widget-content ui-corner-all" />
+          <label>Description</label> <input type="text" name="description" id="event-description" class="text ui-widget-content ui-corner-all" />
+          <label>Start Date</label> <input type="text" name="start_date" id="event-start-date" class="text ui-widget-content ui-corner-all" />
+          <label>Start Time</label> <input type="text" name="start_time" id="event-start-time" class="text ui-widget-content ui-corner-all" />
+          <label>End Date</label> <input type="text" name="end_date" id="event-end-date" class="text ui-widget-content ui-corner-all" />
+          <label>End Time</label> <input type="text" name="end_time" id="event-end-time" class="text ui-widget-content ui-corner-all" />
+          <label>Location</label> <input type="text" name="location" id="event-location" class="text ui-widget-content ui-corner-all" />
+          <label>Tags</label> <input type="text" name="tags" id="event-tags" class="text ui-widget-content ui-corner-all" />
           <input type="hidden" id="id" name="id" />
         </fieldset>      
       </form> 
@@ -187,9 +187,9 @@
     <div id = "login" title="Log In">
        <form action="/users/login" method="get" accept-charset="utf-8">
          <fieldset>
-           <label for="username">Username</label> 
+           <label>Username</label> 
            <input type="text" name = "username" id = "username" class="text ui-widget-content ui-corner-all" />
-           <label for="password">Password</label> 
+           <label>Password</label> 
            <input type="password" name = "password" id = "pw" class="text ui-widget-content ui-corner-all" />
          </fieldset>
        </form>
